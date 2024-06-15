@@ -1,23 +1,23 @@
-# Use an official Node runtime as a parent image
-FROM node:16
+# Use Node.js 14 as base image
+FROM node:14
 
-# Set the working directory to /app
+# Set the working directory
 WORKDIR /app
 
-# Set NODE_OPTIONS to disable OpenSSL 3.0
-ENV NODE_OPTIONS=--openssl-legacy-provider
+# Copy package.json and package-lock.json
+COPY frontend/package*.json ./
 
-# Copy the current directory contents into the container at /app
-COPY . /app
-
-# Install any needed packages specified in package.json
+# Install dependencies
 RUN npm install
 
-# Build the app
+# Copy the rest of the application code
+COPY frontend/ .
+
+# Build the application
 RUN npm run build
 
-# Make port 3000 available to the world outside this container
+# Expose the port
 EXPOSE 3000
 
-# Run the app
+# Start the application
 CMD ["npm", "start"]
