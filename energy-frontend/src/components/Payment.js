@@ -55,7 +55,7 @@ const Payment = () => {
     }
 
     try {
-      await axios.post('https://energy-e6xp.onrender.com:8000/users/api/register-payment/', {
+      await axios.post('https://energy-e6xp.onrender.com/users/api/register-payment/', {
         user_id: user.id,
         plan,
         membership_expiration: membershipExpiration.toISOString().split('T')[0],
