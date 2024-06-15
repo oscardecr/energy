@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
 
   const loginUser = async (email, password) => {
     try {
-      const response = await axios.post('http://127.0.0.1:8000/users/api/auth/login/', {
+      const response = await axios.post('https://energy-e6xp.onrender.com:8000/users/api/auth/login/', {
         email,
         password,
       });
