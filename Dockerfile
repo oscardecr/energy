@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 8000
 
 # Run the application
-CMD ["gunicorn", "myproject.wsgi", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "energy.wsgi", "--bind", "0.0.0.0:8000"]
