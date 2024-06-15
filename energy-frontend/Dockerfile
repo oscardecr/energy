@@ -4,6 +4,9 @@ FROM node:16
 # Set the working directory to /app
 WORKDIR /app
 
+# Set NODE_OPTIONS to disable OpenSSL 3.0
+ENV NODE_OPTIONS=--openssl-legacy-provider
+
 # Copy the current directory contents into the container at /app
 COPY . /app
 
