@@ -17,7 +17,7 @@ const UserList = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/users/api/users/');
+        const response = await axios.get('https://energy-e6xp.onrender.com/users/api/users/');
         setUsers(response.data);
         setFilteredUsers(response.data);
         setLoading(false);

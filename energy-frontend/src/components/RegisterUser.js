@@ -20,7 +20,7 @@ const RegisterUser = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://127.0.0.1:8000/users/register/', formData);
+            const response = await axios.post('https://energy-e6xp.onrender.com:8000/users/register/', formData);
             console.log('User registered successfully', response.data);
         } catch (error) {
             console.error('Error registering user', error);

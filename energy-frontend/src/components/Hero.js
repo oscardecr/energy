@@ -43,7 +43,7 @@ export default function Hero() {
 
   const handleRegister = async () => {
     try {
-      const response = await axios.post('http://127.0.0.1:8000/users/register-visit/', { national_id: nationalId });
+      const response = await axios.post('https://energy-e6xp.onrender.com:8000/users/register-visit/', { national_id: nationalId });
       setMessage(response.data.message);
     } catch (error) {
       if (error.response) {
