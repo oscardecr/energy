@@ -50,6 +50,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # React development server
     "http://127.0.0.1:8000",
     "energy-e6xp.onrender.com",
+    "https://energy-e6xp.onrender.com",
 ]
 
 AUTH_USER_MODEL = 'users.User'
