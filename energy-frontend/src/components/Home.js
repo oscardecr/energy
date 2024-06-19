@@ -1,23 +1,19 @@
 import * as React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Box, Container, Typography, Grid, Paper, Button, GlobalStyles } from '@mui/material';
+import { Box, Container, GlobalStyles } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import AppAppBar from './AppAppBar';
 import theme from '../theme';
 import Footer from './Footer';
 import Hero from './Hero';
 import Carousel from '../components/Carousel';  // Import the Carousel component
-import Pricing from '../components/Pricing';  // Import the UserList component
+import Pricing from '../components/Pricing';  // Import the Pricing component
 
 export default function Home() {
   const [mode, setMode] = React.useState('light');
   const [showCustomTheme, setShowCustomTheme] = React.useState(true);
   const LPtheme = createTheme(theme);
   const defaultTheme = createTheme({ palette: { mode } });
-
-  const handleNavigation = (path) => {
-    window.location.href = path;
-  };
 
   return (
     <ThemeProvider theme={showCustomTheme ? LPtheme : defaultTheme}>
@@ -38,7 +34,6 @@ export default function Home() {
           color: 'text.primary',
         }}
       >
-        
         <AppAppBar />
         <Hero />
         <Carousel />  {/* Add the Carousel component here */}

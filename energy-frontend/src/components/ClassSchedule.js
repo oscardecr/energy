@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Container, Typography, TextField, Grid, Card, CardContent, Button, CssBaseline, GlobalStyles } from '@mui/material';
+import { Box, Container, Typography, TextField, Grid, Card, CardContent, CssBaseline, GlobalStyles } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import axios from 'axios';
 import AppAppBar from './AppAppBar';
 import Footer from './Footer';
 import theme from '../theme';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
 
 const classSchedule = {
     "Monday": ["05:00", "06:15", "07:30", "08:45", "10:00", "16:15", "17:30", "18:45", "20:00"],
@@ -43,20 +45,6 @@ const ClassSchedule = () => {
 
     const handleDateChange = (event) => {
         setDate(event.target.value);
-    };
-
-    const handleBookClass = async (classTime) => {
-        try {
-            const classData = {
-                day: date,
-                hour: classTime
-            };
-            const response = await axios.post('http://127.0.0.1:8000/classes/', classData);
-            console.log('Class booked successfully', response.data);
-            fetchClasses(new Date(date));
-        } catch (error) {
-            console.error('Error booking class', error);
-        }
     };
 
     return (
@@ -125,16 +113,15 @@ const ClassSchedule = () => {
                             }}
                         />
                     </Container>
-                    <Typography variant="h5" gutterBottom>Clases disponibles el día {new Date(date + 'T00:00:00-06:00').toDateString()}</Typography>
+                    <Typography variant="h5" gutterBottom>
+                        Clases disponibles el día {format(new Date(date + 'T00:00:00-06:00'), 'EEEE, d MMMM yyyy', { locale: es })}
+                    </Typography>
                     <Grid container spacing={3} justifyContent="center">
                         {classSchedule[day].map((time) => (
                             <Grid item xs={12} sm={6} md={4} key={time}>
                                 <Card sx={{ backgroundColor: '#333333', color: '#ffffff' }}>
                                     <CardContent>
                                         <Typography variant="h6">{`Clase de ${time}`}</Typography>
-                                        <Button variant="contained" color="success" onClick={() => handleBookClass(time)}>
-                                            Book Class
-                                        </Button>
                                     </CardContent>
                                 </Card>
                             </Grid>

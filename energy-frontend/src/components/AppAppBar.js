@@ -135,7 +135,6 @@ function AppAppBar({ mode, toggleColorMode }) {
                 <Divider sx={{ my: 3 }} />
                 <MenuItem component={Link} to="/">INICIO</MenuItem>
                 <MenuItem component={Link} to="/classes">HORARIOS</MenuItem>
-                <MenuItem component={Link} to="/classes">ESTADO MENSUALIDAD</MenuItem>
                 <MenuItem onClick={handlePricingClick}>PRECIOS</MenuItem>
                 {user && (
                   <MenuItem component={Link} to="/users">VER USUARIOS</MenuItem>

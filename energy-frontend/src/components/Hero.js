@@ -92,11 +92,11 @@ export default function Hero() {
               display: 'flex',
               flexDirection: { xs: 'column', sm: 'row' },
               alignItems: 'center',
-              fontSize: 'clamp(3rem, 10vw, 3.5rem)',
+              fontSize: { xs: '2rem', sm: '3rem', md: '3.5rem' }, // Adjust font size for different screen sizes
               color: (theme) => theme.palette.success.main,
             }}
           >
-            Energy&nbsp;Training&nbsp;center&nbsp;
+            Energy&nbsp;Training&nbsp;Center
           </Typography>
           <Typography
             sx={{
