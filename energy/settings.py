@@ -46,7 +46,9 @@ INSTALLED_APPS = [
     'corsheaders',  # For handling CORS
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "https://energy-e6xp.onrender.com"
+]
 
 AUTH_USER_MODEL = 'users.User'
 
