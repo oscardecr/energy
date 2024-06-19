@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Container, Typography, TextField, Grid, Card, CardContent, Button, CssBaseline, GlobalStyles } from '@mui/material';
+import { Box, Container, Typography, TextField, Grid, Card, CardContent, CssBaseline, GlobalStyles } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import axios from 'axios';
 import AppAppBar from './AppAppBar';
@@ -9,23 +9,23 @@ import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
 
 const classSchedule = {
-    "Lunes": ["05:00", "06:15", "07:30", "08:45", "10:00", "16:15", "17:30", "18:45", "20:00"],
-    "Martes": ["05:00", "06:15", "07:30", "08:45", "10:00", "16:15", "17:30", "18:45", "20:00"],
-    "Miércoles": ["05:00", "06:15", "07:30", "08:45", "10:00", "16:15", "17:30", "18:45", "20:00"],
-    "Jueves": ["05:00", "06:15", "07:30", "08:45", "10:00", "16:15", "17:30", "18:45", "20:00"],
-    "Viernes": ["05:00", "06:15", "07:30", "08:45", "10:00", "16:15", "17:30", "18:45", "20:00"],
-    "Sábado": ["08:00", "09:15", "10:30"],
-    "Domingo": []
+    "lunes": ["05:00", "06:15", "07:30", "08:45", "10:00", "16:15", "17:30", "18:45", "20:00"],
+    "martes": ["05:00", "06:15", "07:30", "08:45", "10:00", "16:15", "17:30", "18:45", "20:00"],
+    "miércoles": ["05:00", "06:15", "07:30", "08:45", "10:00", "16:15", "17:30", "18:45", "20:00"],
+    "jueves": ["05:00", "06:15", "07:30", "08:45", "10:00", "16:15", "17:30", "18:45", "20:00"],
+    "viernes": ["05:00", "06:15", "07:30", "08:45", "10:00", "16:15", "17:30", "18:45", "20:00"],
+    "sábado": ["08:00", "09:15", "10:30"],
+    "domingo": []
 };
 
 const ClassSchedule = () => {
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
-    const [day, setDay] = useState(format(new Date(), 'EEEE', { locale: es }));
+    const [day, setDay] = useState(format(new Date(), 'eeee', { locale: es }).toLowerCase());
     const [classes, setClasses] = useState([]);
 
     useEffect(() => {
         const selectedDate = parseISO(date);
-        const selectedDay = format(selectedDate, 'EEEE', { locale: es });
+        const selectedDay = format(selectedDate, 'eeee', { locale: es }).toLowerCase();
         setDay(selectedDay);
         fetchClasses(selectedDate);
     }, [date]);
