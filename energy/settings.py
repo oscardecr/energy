@@ -47,7 +47,34 @@ INSTALLED_APPS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "https://energy-e6xp.onrender.com"
+    'https://energy-1.onrender.com',  # Add your frontend domain here
+]
+
+CORS_ALLOW_CREDENTIALS = True  # If you are using cookies for authentication
+
+# Optionally, allow all origins (useful for debugging, not recommended for production)
+# CORS_ALLOW_ALL_ORIGINS = True
+
+# If you need to allow specific methods and headers, add the following:
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
 ]
 
 AUTH_USER_MODEL = 'users.User'
