@@ -18,7 +18,7 @@ const CreateClass = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://127.0.0.1:8000/classes/', formData);
+            const response = await axios.post('https://energy-e6xp.onrender.com/classes/', formData);
             console.log('Class created successfully', response.data);
         } catch (error) {
             console.error('Error creating class', error);

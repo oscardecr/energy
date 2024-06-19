@@ -30,7 +30,7 @@ const ClassSchedule = () => {
 
     const fetchClasses = async (selectedDate) => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/classes/', {
+            const response = await axios.get('https://energy-e6xp.onrender.com/classes/', {
                 params: {
                     date: selectedDate.toISOString().split('T')[0]
                 }

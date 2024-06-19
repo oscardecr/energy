@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://127.0.0.1:8000';  // Adjust to your Django server URL
+const API_URL = 'https://energy-e6xp.onrender.com';  // Adjust to your Django server URL
 
 export const registerUser = (userData) => {
     return axios.post(`${API_URL}/users/register/`, userData);
