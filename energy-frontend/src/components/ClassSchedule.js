@@ -5,7 +5,7 @@ import axios from 'axios';
 import AppAppBar from './AppAppBar';
 import Footer from './Footer';
 import theme from '../theme';
-import { format } from 'date-fns';
+import { format, parseISO  } from 'date-fns';
 import { es } from 'date-fns/locale';
 
 const classSchedule = {
@@ -20,12 +20,12 @@ const classSchedule = {
 
 const ClassSchedule = () => {
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
-    const [day, setDay] = useState(new Date().toLocaleString('en-US', { weekday: 'long', timeZone: 'America/Chicago' }));
+    const [day, setDay] = useState(format(new Date(), 'EEEE', { locale: es }));
     const [classes, setClasses] = useState([]);
 
     useEffect(() => {
-        const selectedDate = new Date(date + 'T00:00:00-06:00');
-        const selectedDay = selectedDate.toLocaleString('en-US', { weekday: 'long', timeZone: 'America/Chicago' });
+        const selectedDate = parseISO(date);
+        const selectedDay = format(selectedDate, 'EEEE', { locale: es });
         setDay(selectedDay);
         fetchClasses(selectedDate);
     }, [date]);
@@ -113,11 +113,9 @@ const ClassSchedule = () => {
                             }}
                         />
                     </Container>
-                    <Typography variant="h5" gutterBottom>
-                        Clases disponibles el día {format(new Date(date + 'T00:00:00-06:00'), 'EEEE, d MMMM yyyy', { locale: es })}
-                    </Typography>
+                    <Typography variant="h5" gutterBottom>Clases disponibles el día {format(parseISO(date), 'PPP', { locale: es })}</Typography>
                     <Grid container spacing={3} justifyContent="center">
-                        {classSchedule[day].map((time) => (
+                        {(classSchedule[day] || []).map((time) => (
                             <Grid item xs={12} sm={6} md={4} key={time}>
                                 <Card sx={{ backgroundColor: '#333333', color: '#ffffff' }}>
                                     <CardContent>
