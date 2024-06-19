@@ -46,12 +46,7 @@ INSTALLED_APPS = [
     'corsheaders',  # For handling CORS
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # React development server
-    "http://127.0.0.1:8000",
-    "https://energy-e6xp.onrender.com",
-    "https://energy-1.onrender.com",
-]
+CORS_ALLOW_ALL_ORIGINS = True
 
 AUTH_USER_MODEL = 'users.User'
 
