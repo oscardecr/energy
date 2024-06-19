@@ -43,7 +43,7 @@ export default function Hero() {
 
   const handleRegister = async () => {
     try {
-      const response = await axios.post('https://energy-e6xp.onrender.com:8000/users/register-visit/', { national_id: nationalId });
+      const response = await axios.post('https://energy-e6xp.onrender.com/users/register-visit/', { national_id: nationalId });
       setMessage(response.data.message);
     } catch (error) {
       if (error.response) {
@@ -105,7 +105,7 @@ export default function Hero() {
               width: { sm: '100%', md: '80%' },
             }}
           >
-            Bienvenido al sitio web de Energy Gym localizado en San Rafael de Poas, Alajuela.
+            Bienvenido al sitio web de Energy Training Center localizado en San Rafael de Poas, Alajuela.
           </Typography>
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
