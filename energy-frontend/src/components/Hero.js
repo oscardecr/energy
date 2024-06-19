@@ -105,7 +105,7 @@ export default function Hero() {
               width: { sm: '100%', md: '80%' },
             }}
           >
-            Bienvenido al sitio web de Energy Gym localizado en San Rafael de Poas, Alajuela.
+            Bienvenido al sitio web de Energy Training Center localizado en San Rafael de Poas, Alajuela.
           </Typography>
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
