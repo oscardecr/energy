@@ -104,10 +104,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'energy.urls'
 
-# Allow all origins for simplicity (adjust this as needed)
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-]
 
 TEMPLATES = [
     {
