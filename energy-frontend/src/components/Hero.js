@@ -114,7 +114,7 @@ export default function Hero() {
             sx={{ pt: 2, width: { xs: '100%', sm: 'auto' } }}
           >
             <InputLabel htmlFor="national-id" sx={visuallyHidden}>
-              National ID
+              Cédula
             </InputLabel>
             <TextField
               id="national-id"
