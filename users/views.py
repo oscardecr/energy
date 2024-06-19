@@ -60,15 +60,15 @@ class LoginView(APIView):
 def register_visit(request):
     national_id = request.data.get('national_id')
     if not national_id:
-        return Response({'error': 'National ID is required'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Se requiere la cédula de identidad.'}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
         user = User.objects.get(national_id=national_id)
     except User.DoesNotExist:
-        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({'error': 'Usuario no encontrado'}, status=status.HTTP_404_NOT_FOUND)
 
     visit = Visit.objects.create(user=user)
-    return Response({'message': 'Visit registered successfully'}, status=status.HTTP_201_CREATED)
+    return Response({'message': 'Visita registrada exitosamente'}, status=status.HTTP_201_CREATED)
 
 
 @api_view(['POST'])
@@ -78,7 +78,7 @@ def register_payment(request):
     try:
         user = User.objects.get(id=user_id)
     except User.DoesNotExist:
-        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({'error': 'Usuario no encontrado'}, status=status.HTTP_404_NOT_FOUND)
     
     today = datetime.today().date()
     if plan in ['mes', 'familiar', 'colegial']:
