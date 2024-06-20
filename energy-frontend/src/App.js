@@ -12,6 +12,7 @@ import SignUp from './components/SignUp';
 import { AuthProvider } from './contexts/AuthContext'; // Import AuthProvider
 import AppAppBar from './components/AppAppBar';
 import Payment from './components/Payment';
+import ExpiredMemberships from './components/ExpiredMemberships'; // Import the new component
 
 
 
@@ -30,6 +31,7 @@ function App() {
             <Route path="/signin" element={<SignIn />} />  {/* Add route for SignIn */}
             <Route path="/signup" element={<SignUp />} />  {/* Add route for Signup */}
             <Route path="/payment" element={<Payment />} />
+            <Route path="/expired-memberships" element={<ExpiredMemberships />} /> 
           </Routes>
         </AuthProvider>
       </Router>

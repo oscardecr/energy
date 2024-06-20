@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Typography, TextField, Button, Paper, Box } from '@mui/material';
-import axios from 'axios';
+import apiClient from './apiClient';
 
 const RegisterUser = () => {
     const [formData, setFormData] = useState({
@@ -20,7 +20,7 @@ const RegisterUser = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('https://energy-e6xp.onrender.com/users/register/', formData);
+            const response = await apiClient.post('/users/register/', formData);
             console.log('User registered successfully', response.data);
         } catch (error) {
             console.error('Error registering user', error);

@@ -11,6 +11,7 @@ from rest_framework.views import APIView
 from .models import Visit
 from rest_framework.decorators import action
 from datetime import datetime, timedelta
+from django.utils.timezone import now
 
 @api_view(['POST'])
 def register_user(request):
@@ -96,3 +97,10 @@ def register_payment(request):
     user.save()
     
     return Response({'message': 'Payment registered successfully', 'new_expiration': new_expiration}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def expired_memberships(request):
+    expired_users = User.objects.filter(membership_expiration__lt=now())
+    serializer = UserSerializer(expired_users, many=True)
+    return Response(serializer.data)

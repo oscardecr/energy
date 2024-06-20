@@ -8,7 +8,8 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { visuallyHidden } from '@mui/utils';
 import { styled } from '@mui/material/styles';
-import axios from 'axios';
+import apiClient from './apiClient';
+import registerIcon from '../assets/verify.png';
 
 const StyledBox = styled('div')(({ theme }) => ({
   alignSelf: 'center',
@@ -43,7 +44,7 @@ export default function Hero() {
 
   const handleRegister = async () => {
     try {
-      const response = await axios.post('https://energy-e6xp.onrender.com/users/register-visit/', { national_id: nationalId });
+      const response = await apiClient.post('/users/register-visit/', { national_id: nationalId });
       setMessage(response.data.message);
     } catch (error) {
       if (error.response) {
@@ -101,7 +102,7 @@ export default function Hero() {
           <Typography
             sx={{
               textAlign: 'center',
-              color: 'text.secondary',
+              color: 'white',
               width: { sm: '100%', md: '80%' },
             }}
           >
@@ -152,7 +153,12 @@ export default function Hero() {
                 },
               }}
             />
-            <Button variant="contained" color="success" onClick={handleRegister}>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={handleRegister}
+              startIcon={<img src={registerIcon} alt="logo" style={{ width: 20, height: 20 }} />} // Add the logo as an icon
+            >
               Registrarse
             </Button>
           </Stack>

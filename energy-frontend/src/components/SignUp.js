@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import apiClient from './apiClient';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -39,7 +39,7 @@ export default function SignUp() {
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-        const response = await axios.post('https://energy-e6xp.onrender.com/users/register/', formData);
+        const response = await apiClient.post('/users/register/', formData);
         if (response.status === 201) {
           navigate('/signin');
         }
