@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import apiClient from './apiClient';
 import { useNavigate } from 'react-router-dom';
 import { CssBaseline, Box, Container, Typography, Grid, Card, CardContent, CircularProgress, TextField, Button, GlobalStyles } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -17,7 +17,7 @@ const UserList = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('https://energy-e6xp.onrender.com/users/api/users/');
+        const response = await apiClient.get('/users/api/users/');
         setUsers(response.data);
         setFilteredUsers(response.data);
         setLoading(false);

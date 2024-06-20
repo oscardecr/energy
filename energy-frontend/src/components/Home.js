@@ -7,13 +7,18 @@ import theme from '../theme';
 import Footer from './Footer';
 import Hero from './Hero';
 import Carousel from '../components/Carousel';  // Import the Carousel component
-import Pricing from '../components/Pricing';  // Import the Pricing component
+import Pricing from '../components/Pricing';  // Import the UserList component
+import backgroundImage from '../assets/background.jpg';  // Import your background image
 
 export default function Home() {
   const [mode, setMode] = React.useState('light');
   const [showCustomTheme, setShowCustomTheme] = React.useState(true);
   const LPtheme = createTheme(theme);
   const defaultTheme = createTheme({ palette: { mode } });
+
+  const handleNavigation = (path) => {
+    window.location.href = path;
+  };
 
   return (
     <ThemeProvider theme={showCustomTheme ? LPtheme : defaultTheme}>
@@ -32,6 +37,9 @@ export default function Home() {
           minHeight: '100vh',
           bgcolor: 'transparent', // Transparent to inherit the global black background
           color: 'text.primary',
+          backgroundImage: `url(${backgroundImage})`, // Set the background image
+          backgroundSize: 'cover', // Cover the entire container
+          backgroundPosition: 'center', // Center the image
         }}
       >
         <AppAppBar />

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TextField, Button, Container, Typography } from '@mui/material';
-import axios from 'axios';
+import apiClient from './apiClient';
 
 const CreateClass = () => {
     const [formData, setFormData] = useState({
@@ -18,7 +18,7 @@ const CreateClass = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('https://energy-e6xp.onrender.com/classes/', formData);
+            const response = await apiClient.post('/classes/', formData);
             console.log('Class created successfully', response.data);
         } catch (error) {
             console.error('Error creating class', error);

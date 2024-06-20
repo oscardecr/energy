@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Container, Typography, TextField, Grid, Card, CardContent, CssBaseline, GlobalStyles } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import axios from 'axios';
 import AppAppBar from './AppAppBar';
 import Footer from './Footer';
 import theme from '../theme';
 import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
+import apiClient from './apiClient';
 
 const classSchedule = {
     "lunes": ["05:00", "06:15", "07:30", "08:45", "10:00", "16:15", "17:30", "18:45", "20:00"],
@@ -32,7 +32,7 @@ const ClassSchedule = () => {
 
     const fetchClasses = async (selectedDate) => {
         try {
-            const response = await axios.get('https://energy-e6xp.onrender.com/classes/', {
+            const response = await apiClient.get('/classes/', {
                 params: {
                     date: selectedDate.toISOString().split('T')[0]
                 }

@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'energy-e6xp.onrender.com',
+    "127.0.0.1",
 ]
 
 
@@ -47,7 +48,9 @@ INSTALLED_APPS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'https://energy-1.onrender.com',  # Add your frontend domain here
+    "http://localhost:3000",  # React development server
+    "http://127.0.0.1:8000",
+    'https://energy-1.onrender.com',
 ]
 
 CORS_ALLOW_CREDENTIALS = True  # If you are using cookies for authentication

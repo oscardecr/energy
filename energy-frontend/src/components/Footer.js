@@ -1,21 +1,13 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
-import InputLabel from '@mui/material/InputLabel';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-
-import { visuallyHidden } from '@mui/utils';
-
-import FacebookIcon from '@mui/icons-material/GitHub';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import TwitterIcon from '@mui/icons-material/X';
+import InstagramIcon from '@mui/icons-material/Instagram';
 import WhatsAppButton from '../components/WhatsAppButton';
-import SitemarkIcon from './SitemarkIcon';
+import { Instagram } from '@mui/icons-material';
 
 function Copyright() {
   return (
@@ -60,8 +52,8 @@ export default function Footer() {
             phoneNumber="87483595" // Replace with your phone number
             message="Hola, me gustaría obtener más información sobre Energy gym."
           />
-            <Typography variant="body2" gutterBottom sx={{ fontWeight: 600, mt: 2 }}>
-              Contactanos
+            <Typography variant="body2" gutterBottom sx={{ fontWeight: 600, mt: 2, color: "white" }}>
+              Contáctanos
             </Typography>
           </Box>
         </Box>
@@ -72,24 +64,6 @@ export default function Footer() {
             gap: 1,
           }}
         >
-          <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
-            Product
-          </Typography>
-          <Link color="text.secondary" variant="body2" href="#">
-            Features
-          </Link>
-          <Link color="text.secondary" variant="body2" href="#">
-            Testimonials
-          </Link>
-          <Link color="text.secondary" variant="body2" href="#">
-            Highlights
-          </Link>
-          <Link color="text.secondary" variant="body2" href="#">
-            Pricing
-          </Link>
-          <Link color="text.secondary" variant="body2" href="#">
-            FAQs
-          </Link>
         </Box>
         <Box
           sx={{
@@ -98,37 +72,11 @@ export default function Footer() {
             gap: 1,
           }}
         >
-          <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
-            Company
+          <Typography variant="body2" sx={{ fontWeight: 'medium', color: "white" }}>
+            Empresa
           </Typography>
           <Link color="text.secondary" variant="body2" href="#">
-            About us
-          </Link>
-          <Link color="text.secondary" variant="body2" href="#">
-            Careers
-          </Link>
-          <Link color="text.secondary" variant="body2" href="#">
-            Press
-          </Link>
-        </Box>
-        <Box
-          sx={{
-            display: { xs: 'none', sm: 'flex' },
-            flexDirection: 'column',
-            gap: 1,
-          }}
-        >
-          <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
-            Legal
-          </Typography>
-          <Link color="text.secondary" variant="body2" href="#">
-            Terms
-          </Link>
-          <Link color="text.secondary" variant="body2" href="#">
-            Privacy
-          </Link>
-          <Link color="text.secondary" variant="body2" href="#">
-            Contact
+            Sobre nosotros
           </Link>
         </Box>
       </Box>
@@ -143,18 +91,20 @@ export default function Footer() {
         }}
       >
         <div>
-          <Link color="text.secondary" variant="body2" href="#">
-            Privacy Policy
+          <br />
+          <Link href="https://www.flaticon.com/free-icons/register" title="register icons" color="inherit">
+            Register icons created by Pixel perfect - Flaticon
           </Link>
           <Typography sx={{ display: 'inline', mx: 0.5, opacity: 0.5 }}>
             &nbsp;•&nbsp;
           </Typography>
-          <Link color="text.secondary" variant="body2" href="#">
-            Terms of Service
+          <Link href="https://www.flaticon.com/free-icons/gym" title="dumbell icons" color="inherit">
+            Gym icons created by Freepik - Flaticon
           </Link>
           <Typography sx={{ display: 'inline', mx: 0.5, opacity: 0.5 }}>
             &nbsp;•&nbsp;
           </Typography>
+          <br />
           <Link color="text.secondary" variant="body2" href="#">
             Developed by Oscar Rodriguez.
           </Link>
@@ -168,27 +118,11 @@ export default function Footer() {
         >
           <IconButton
             color="inherit"
-            href="https://github.com/mui"
-            aria-label="GitHub"
+            href="https://www.instagram.com/energy_training_center_?igsh=MWs1N2FmODNpYXl6dg=="
+            aria-label="Instagram"
             sx={{ alignSelf: 'center' }}
           >
-            <FacebookIcon />
-          </IconButton>
-          <IconButton
-            color="inherit"
-            href="https://x.com/MaterialUI"
-            aria-label="X"
-            sx={{ alignSelf: 'center' }}
-          >
-            <TwitterIcon />
-          </IconButton>
-          <IconButton
-            color="inherit"
-            href="https://www.linkedin.com/company/mui/"
-            aria-label="LinkedIn"
-            sx={{ alignSelf: 'center' }}
-          >
-            <LinkedInIcon />
+            <Instagram />
           </IconButton>
         </Stack>
       </Box>

@@ -16,6 +16,7 @@ import logo from '../assets/logo.jpeg'; // Import your logo
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useContext } from 'react';
 import AuthContext from '../contexts/AuthContext';
+import registerIcon from '../assets/dumbbell.png';
 
 function AppAppBar({ mode, toggleColorMode }) {
   const [open, setOpen] = React.useState(false);
@@ -81,13 +82,16 @@ function AppAppBar({ mode, toggleColorMode }) {
           })}
         >
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
-            <img src={logo} alt="Energy's Gym Logo" style={{ height: 50, marginRight: 16 }} />
+            <img src={registerIcon} alt="Energy's Gym Logo" style={{ height: 50, marginRight: 16 }} />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
               <Button color="success" component={Link} to="/">INICIO</Button>
               <Button color="success" component={Link} to="/classes">HORARIOS</Button>
               <Button color="success" onClick={handlePricingClick}>PRECIOS</Button>
               {user && (
                 <Button color="success" component={Link} to="/users">VER USUARIOS</Button>
+              )}
+              {user && (
+                <Button color="success" component={Link} to="/expired-memberships">MEMBRESÍAS EXPIRADAS</Button>
               )}
             </Box>
           </Box>

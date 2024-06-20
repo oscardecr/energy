@@ -103,7 +103,7 @@ export default function Pricing() {
         <Typography component="h2" variant="h4" sx={{ color: (theme) => theme.palette.success.main, }}>
           Precios
         </Typography>
-        <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+        <Typography variant="body1" sx={{ color: 'white' }}>
           Aquí puedes consultar nuestros planes. <br />
         </Typography>
       </Box>
