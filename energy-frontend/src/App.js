@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import RegisterUser from './components/RegisterUser';
 import AdminUsers from './components/AdminUsers';
 import ClassSchedule from './components/ClassSchedule';
 import Home from './components/Home';
@@ -13,6 +12,8 @@ import { AuthProvider } from './contexts/AuthContext'; // Import AuthProvider
 import AppAppBar from './components/AppAppBar';
 import Payment from './components/Payment';
 import ExpiredMemberships from './components/ExpiredMemberships'; // Import the new component
+import DeleteUser from './components/DeleteUser';
+
 
 
 
@@ -23,7 +24,6 @@ function App() {
           <AppAppBar />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/register" element={<RegisterUser />} />
             <Route path="/admin/users" element={<AdminUsers />} />
             <Route path="/classes" element={<ClassSchedule />} />
             <Route path="/info" element={<GymInfo />} />
@@ -31,7 +31,8 @@ function App() {
             <Route path="/signin" element={<SignIn />} />  {/* Add route for SignIn */}
             <Route path="/signup" element={<SignUp />} />  {/* Add route for Signup */}
             <Route path="/payment" element={<Payment />} />
-            <Route path="/expired-memberships" element={<ExpiredMemberships />} /> 
+            <Route path="/expired-memberships" element={<ExpiredMemberships />} />
+            <Route path="/delete-user" element={<DeleteUser />} /> 
           </Routes>
         </AuthProvider>
       </Router>

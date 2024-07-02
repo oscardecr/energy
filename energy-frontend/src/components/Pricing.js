@@ -194,7 +194,7 @@ export default function Pricing() {
               </CardContent>
               <CardActions sx={{ mt: 'auto' }}>
                 <WhatsAppButton
-                  phoneNumber="87483595" // Replace with your phone number
+                  phoneNumber="87738143" // Replace with your phone number
                   message={`Hola, estoy interesado(a) en el plan ${tier.title}.`}
                 />
               </CardActions>

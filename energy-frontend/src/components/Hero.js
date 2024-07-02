@@ -42,7 +42,8 @@ export default function Hero() {
   const [nationalId, setNationalId] = React.useState('');
   const [message, setMessage] = React.useState('');
 
-  const handleRegister = async () => {
+  const handleRegister = async (event) => {
+    event.preventDefault(); // Prevent the form from reloading the page
     try {
       const response = await apiClient.post('/users/register-visit/', { national_id: nationalId });
       setMessage(response.data.message);
@@ -108,60 +109,62 @@ export default function Hero() {
           >
             Bienvenido al sitio web de Energy Training Center localizado en San Rafael de Poas, Alajuela.
           </Typography>
-          <Stack
-            direction={{ xs: 'column', sm: 'row' }}
-            spacing={1}
-            useFlexGap
-            sx={{ pt: 2, width: { xs: '100%', sm: 'auto' } }}
-          >
-            <InputLabel htmlFor="national-id" sx={visuallyHidden}>
-              National ID
-            </InputLabel>
-            <TextField
-              id="national-id"
-              hiddenLabel
-              size="small"
-              variant="outlined"
-              aria-label="Introduce tu cédula de identidad"
-              placeholder="Cédula de identidad"
-              value={nationalId}
-              onChange={(e) => setNationalId(e.target.value)}
-              sx={{
-                backgroundColor: '#ffffff',
-                borderRadius: '5px',
-                boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
-                input: {
-                  color: '#000000', // Text color
-                  padding: '10px 14px',
-                },
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: 'transparent',
-                  },
-                  '&:hover fieldset': {
-                    borderColor: '#00e676',
-                  },
-                  '&.Mui-focused fieldset': {
-                    borderColor: '#00e676',
-                  },
-                },
-              }}
-              slotProps={{
-                htmlInput: {
-                  autoComplete: 'off',
-                  'aria-label': 'Introduce tu cédula de identidad',
-                },
-              }}
-            />
-            <Button
-              variant="contained"
-              color="success"
-              onClick={handleRegister}
-              startIcon={<img src={registerIcon} alt="logo" style={{ width: 20, height: 20 }} />} // Add the logo as an icon
+          <form onSubmit={handleRegister} style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              spacing={1}
+              useFlexGap
+              sx={{ pt: 2, width: { xs: '100%', sm: 'auto' } }}
             >
-              Registrarse
-            </Button>
-          </Stack>
+              <InputLabel htmlFor="national-id" sx={visuallyHidden}>
+                National ID
+              </InputLabel>
+              <TextField
+                id="national-id"
+                hiddenLabel
+                size="small"
+                variant="outlined"
+                aria-label="Introduce tu cédula de identidad"
+                placeholder="Cédula de identidad"
+                value={nationalId}
+                onChange={(e) => setNationalId(e.target.value)}
+                sx={{
+                  backgroundColor: '#ffffff',
+                  borderRadius: '5px',
+                  boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+                  input: {
+                    color: '#000000', // Text color
+                    padding: '10px 14px',
+                  },
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: 'transparent',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#00e676',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#00e676',
+                    },
+                  },
+                }}
+                slotProps={{
+                  htmlInput: {
+                    autoComplete: 'off',
+                    'aria-label': 'Introduce tu cédula de identidad',
+                  },
+                }}
+              />
+              <Button
+                type="submit"
+                variant="contained"
+                color="success"
+                startIcon={<img src={registerIcon} alt="logo" style={{ width: 20, height: 20 }} />} // Add the logo as an icon
+              >
+                Registrarse
+              </Button>
+            </Stack>
+          </form>
           {message && (
             <Typography sx={{ color: 'text.secondary', mt: 2 }}>
               {message}
