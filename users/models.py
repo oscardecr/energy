@@ -5,11 +5,9 @@ from django.conf import settings
 from django.utils import timezone
 
 class UserManager(BaseUserManager):
-    def create_user(self, national_id, first_name, last_name, password=None, membership_expiration=None, date_born=None, emergency_contact=None):
+    def create_user(self, national_id, first_name, last_name, date_born, emergency_contact, membership_expiration, password=None):
         if not national_id:
             raise ValueError('Users must have a national ID')
-        if membership_expiration is None:
-            membership_expiration = (datetime.now() + timedelta(days=365)).date()
         user = self.model(
             national_id=national_id,
             first_name=first_name,
@@ -18,7 +16,10 @@ class UserManager(BaseUserManager):
             emergency_contact=emergency_contact,
             membership_expiration=membership_expiration
         )
-        user.set_password(password)
+        if password:
+            user.set_password(password)
+        else:
+            user.set_unusable_password()  # Set unusable password if none is provided
         user.save(using=self._db)
         return user
     
@@ -45,7 +46,7 @@ class User(AbstractBaseUser):
     active = models.BooleanField(default=True)
     class_assigned = models.ManyToManyField('classes.Class', blank=True)
     membership_expiration = models.DateField()
-    password = models.CharField(max_length=128)
+    password = models.CharField(max_length=128, null=True, blank=True)  # Make password optional
 
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
