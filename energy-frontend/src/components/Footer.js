@@ -49,7 +49,7 @@ export default function Footer() {
         >
           <Box sx={{ width: { xs: '100%', sm: '60%' } }}>
           <WhatsAppButton
-            phoneNumber="87483595" // Replace with your phone number
+            phoneNumber="87738143" // Replace with your phone number
             message="Hola, me gustaría obtener más información sobre Energy gym."
           />
             <Typography variant="body2" gutterBottom sx={{ fontWeight: 600, mt: 2, color: "white" }}>

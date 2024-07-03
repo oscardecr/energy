@@ -3,22 +3,25 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import User
 from .serializer import UserSerializer, PaymentSerializer
-from .registration_serializer import UserRegistrationSerializer
 from .admin_registration_serializer import AdminRegistrationSerializer
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.views import APIView
 from .models import Visit
-from rest_framework.decorators import action
 from datetime import datetime, timedelta
 from django.utils.timezone import now
 
 @api_view(['POST'])
 def register_user(request):
-    serializer = UserSerializer(data=request.data)
+    data = request.data.copy()  # Make a copy of the data
+    if not data.get('password'):
+        data['password'] = None  # Set password to None if not provided
+
+    serializer = UserSerializer(data=data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    print(serializer.errors)  # Log errors for debugging
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
@@ -56,7 +59,7 @@ class LoginView(APIView):
                 'refresh': str(refresh),
             })
         return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
-    
+
 @api_view(['POST'])
 def register_visit(request):
     national_id = request.data.get('national_id')
@@ -70,7 +73,6 @@ def register_visit(request):
 
     visit = Visit.objects.create(user=user)
     return Response({'message': 'Visita registrada exitosamente'}, status=status.HTTP_201_CREATED)
-
 
 @api_view(['POST'])
 def register_payment(request):
@@ -98,9 +100,31 @@ def register_payment(request):
     
     return Response({'message': 'Payment registered successfully', 'new_expiration': new_expiration}, status=status.HTTP_200_OK)
 
-
 @api_view(['GET'])
 def expired_memberships(request):
     expired_users = User.objects.filter(membership_expiration__lt=now())
     serializer = UserSerializer(expired_users, many=True)
     return Response(serializer.data)
+
+@api_view(['PUT'])
+def update_user(request, pk):
+    try:
+        user = User.objects.get(pk=pk)
+    except User.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = UserSerializer(user, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_user(request, pk):
+    try:
+        user = User.objects.get(pk=pk)
+    except User.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    user.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)

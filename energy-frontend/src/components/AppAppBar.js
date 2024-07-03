@@ -17,12 +17,15 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useContext } from 'react';
 import AuthContext from '../contexts/AuthContext';
 import registerIcon from '../assets/dumbbell.png';
+import Menu from '@mui/material/Menu';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 function AppAppBar({ mode, toggleColorMode }) {
   const [open, setOpen] = React.useState(false);
   const { user, logoutUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
@@ -56,6 +59,14 @@ function AppAppBar({ mode, toggleColorMode }) {
     }
   }, [location.state]);
 
+  const handleUserOptionsClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleUserOptionsClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <AppBar
       position="fixed"
@@ -88,7 +99,30 @@ function AppAppBar({ mode, toggleColorMode }) {
               <Button color="success" component={Link} to="/classes">HORARIOS</Button>
               <Button color="success" onClick={handlePricingClick}>PRECIOS</Button>
               {user && (
-                <Button color="success" component={Link} to="/users">VER USUARIOS</Button>
+                <>
+                  <Button
+                    color="success"
+                    endIcon={<ExpandMoreIcon />}
+                    onClick={handleUserOptionsClick}
+                  >
+                    OPCIONES DE USUARIOS
+                  </Button>
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={handleUserOptionsClose}
+                  >
+                    <MenuItem component={Link} to="/users" onClick={handleUserOptionsClose}>
+                      Ver Usuarios
+                    </MenuItem>
+                    <MenuItem component={Link} to="/delete-user" onClick={handleUserOptionsClose}>
+                      Eliminar Usuarios
+                    </MenuItem>
+                    <MenuItem component={Link} to="/signup" onClick={handleUserOptionsClose}>
+                      Añadir Usuarios
+                    </MenuItem>
+                  </Menu>
+                </>
               )}
               {user && (
                 <Button color="success" component={Link} to="/expired-memberships">MEMBRESÍAS EXPIRADAS</Button>
@@ -141,7 +175,11 @@ function AppAppBar({ mode, toggleColorMode }) {
                 <MenuItem component={Link} to="/classes">HORARIOS</MenuItem>
                 <MenuItem onClick={handlePricingClick}>PRECIOS</MenuItem>
                 {user && (
-                  <MenuItem component={Link} to="/users">VER USUARIOS</MenuItem>
+                  <>
+                    <MenuItem component={Link} to="/users">Ver Usuarios</MenuItem>
+                    <MenuItem component={Link} to="/delete-user">Eliminar Usuarios</MenuItem>
+                    <MenuItem component={Link} to="/signup">Añadir Usuarios</MenuItem>
+                  </>
                 )}
                 <Divider sx={{ my: 3 }} />
                 {!user ? (
