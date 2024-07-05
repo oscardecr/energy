@@ -73,10 +73,3 @@ class User(AbstractBaseUser):
 class Visit(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
-
-
-class Payment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    plan = models.CharField(max_length=20)
-    timestamp = models.DateTimeField(auto_now_add=True)
-    membership_expiration = models.DateField()

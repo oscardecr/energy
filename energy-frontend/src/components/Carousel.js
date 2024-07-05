@@ -4,7 +4,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { Box } from '@mui/material';
 import logo from '../assets/logo.jpeg'; // Adjust the path as necessary
-import image1 from '../assets/image1.jpg'; // Ensure this path is correct
+import image1 from '../assets/image1.jpg'; 
 
 const Carousel = () => {
   const settings = {

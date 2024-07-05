@@ -1,6 +1,6 @@
 import * as React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Box, Container, GlobalStyles } from '@mui/material';
+import { Box, GlobalStyles } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import AppAppBar from './AppAppBar';
 import theme from '../theme';
@@ -12,13 +12,10 @@ import backgroundImage from '../assets/background.jpg';  // Import your backgrou
 
 export default function Home() {
   const [mode, setMode] = React.useState('light');
-  const [showCustomTheme, setShowCustomTheme] = React.useState(true);
+  const [showCustomTheme] = React.useState(true);
   const LPtheme = createTheme(theme);
   const defaultTheme = createTheme({ palette: { mode } });
 
-  const handleNavigation = (path) => {
-    window.location.href = path;
-  };
 
   return (
     <ThemeProvider theme={showCustomTheme ? LPtheme : defaultTheme}>

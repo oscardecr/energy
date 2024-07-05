@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import UserViewSet, AdminUserViewSet, register_user, register_admin, user_list, LoginView, register_visit, register_payment, expired_memberships, update_user, delete_user
+from .views import UserViewSet, AdminUserViewSet, register_user, register_admin, user_list, LoginView, register_visit, register_payment, expired_memberships, update_user, delete_user, recent_visits
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet, basename='user')
@@ -17,4 +17,5 @@ urlpatterns = [
     path('api/expired-memberships/', expired_memberships, name='expired-memberships'),
     path('api/users/<int:pk>/', update_user, name='user-update'),
     path('api/users/delete/<int:pk>/', delete_user, name='user-delete'),
+    path('api/recent-visits/', recent_visits, name='recent-visits'),
 ]
