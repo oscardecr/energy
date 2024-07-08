@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import AdminUsers from './components/AdminUsers';
 import ClassSchedule from './components/ClassSchedule';
 import Home from './components/Home';
 import GymInfo from './components/GymInfo';
 import UserList from './components/UserList'; // Import the UserList component
-import { AppBar, Toolbar, Typography, Container, Box } from '@mui/material';
 import SignIn from './components/SignIn'; 
 import SignUp from './components/SignUp'; 
 import { AuthProvider } from './contexts/AuthContext'; // Import AuthProvider
@@ -13,15 +12,22 @@ import AppAppBar from './components/AppAppBar';
 import Payment from './components/Payment';
 import ExpiredMemberships from './components/ExpiredMemberships'; // Import the new component
 import DeleteUser from './components/DeleteUser';
-
-
+import UpdateUser from './components/UpdateUser';
+import ClassRegistrations from './components/ClassRegistrations';
+import MonthlyIncome from './components/MonthlyIncome';
 
 
 function App() {
+  const [mode, setMode] = useState('light');
+
+  const toggleColorMode = () => {
+    setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+  };
+
     return (
         <Router>
         <AuthProvider>
-          <AppAppBar />
+          <AppAppBar mode={mode} toggleColorMode={toggleColorMode}/>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/admin/users" element={<AdminUsers />} />
@@ -33,6 +39,9 @@ function App() {
             <Route path="/payment" element={<Payment />} />
             <Route path="/expired-memberships" element={<ExpiredMemberships />} />
             <Route path="/delete-user" element={<DeleteUser />} /> 
+            <Route path="/update-user/" element={<UpdateUser />} /> 
+            <Route path="/class-registrations" element={<ClassRegistrations />} />
+            <Route path="/monthly-incomes" element={<MonthlyIncome />} />
           </Routes>
         </AuthProvider>
       </Router>

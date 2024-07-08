@@ -13,6 +13,7 @@ const UserList = () => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
+  const [mode] = useState('light');
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -68,7 +69,7 @@ const UserList = () => {
           color: 'text.primary',
         }}
       >
-        <AppAppBar />
+        <AppAppBar mode={mode} toggleColorMode={() => {}} />
         <Box
           sx={{
             display: 'flex',

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Box, Container, Typography, TextField, Grid, Card, CardContent, CssBaseline, GlobalStyles } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import AppAppBar from './AppAppBar';
@@ -6,7 +6,7 @@ import Footer from './Footer';
 import theme from '../theme';
 import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
-import apiClient from './apiClient';
+
 
 const classSchedule = {
     "lunes": ["05:00", "06:15", "07:30", "08:45", "10:00", "16:15", "17:30", "18:45", "20:00"],
@@ -21,27 +21,8 @@ const classSchedule = {
 const ClassSchedule = () => {
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
     const [day, setDay] = useState(format(new Date(), 'eeee', { locale: es }).toLowerCase());
-    const [classes, setClasses] = useState([]);
+    const [setClasses] = useState([]);
 
-    useEffect(() => {
-        const selectedDate = parseISO(date);
-        const selectedDay = format(selectedDate, 'eeee', { locale: es }).toLowerCase();
-        setDay(selectedDay);
-        fetchClasses(selectedDate);
-    }, [date]);
-
-    const fetchClasses = async (selectedDate) => {
-        try {
-            const response = await apiClient.get('/classes/', {
-                params: {
-                    date: selectedDate.toISOString().split('T')[0]
-                }
-            });
-            setClasses(response.data);
-        } catch (error) {
-            console.error('Error fetching classes', error);
-        }
-    };
 
     const handleDateChange = (event) => {
         setDate(event.target.value);
@@ -80,7 +61,7 @@ const ClassSchedule = () => {
                     }}
                 >
                     <Container sx={{ textAlign: 'center', mb: 5 }}>
-                        <Typography variant="h2" gutterBottom>Selecciona una fecha</Typography>
+                        <Typography variant="h3" gutterBottom sx={{ color: '#ffffff', textAlign: 'center' }}>Selecciona una fecha</Typography>
                         <TextField
                             label=""
                             type="date"
@@ -113,7 +94,7 @@ const ClassSchedule = () => {
                             }}
                         />
                     </Container>
-                    <Typography variant="h5" gutterBottom>Clases disponibles el día {format(parseISO(date), 'PPP', { locale: es })}</Typography>
+                    <Typography variant="h5" gutterBottom sx={{ color: '#ffffff', textAlign: 'center' }}>Clases disponibles el día {format(parseISO(date), 'PPP', { locale: es })}</Typography>
                     <Grid container spacing={3} justifyContent="center">
                         {(classSchedule[day] || []).map((time) => (
                             <Grid item xs={12} sm={6} md={4} key={time}>

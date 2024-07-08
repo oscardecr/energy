@@ -5,7 +5,6 @@ import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import InstagramIcon from '@mui/icons-material/Instagram';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { Instagram } from '@mui/icons-material';
 

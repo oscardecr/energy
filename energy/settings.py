@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'classes',
     'users',
     'energy',
+    'finance',
     'rest_framework',
     'corsheaders',  # For handling CORS
 ]

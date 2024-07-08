@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import apiClient from './apiClient';
 import { Box, Container, Typography, Grid, Card, CardContent, TextField, MenuItem, Button, CssBaseline, GlobalStyles } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import AppAppBar from './AppAppBar'; // Import AppAppBar
@@ -8,12 +8,12 @@ import Footer from './Footer'; // Import Footer
 import theme from '../theme';
 
 const plans = [
-  { value: 'mes', label: 'Mes' },
-  { value: 'quincena', label: 'Quincena' },
-  { value: 'familiar', label: 'Familiar' },
-  { value: 'colegial', label: 'Colegial' },
-  { value: 'semanal', label: 'Semanal' },
-  { value: 'sesion', label: 'Sesión' }
+  { value: 'mes', label: 'Mes', amount: 21000 },
+  { value: 'quincena', label: 'Quincena', amount: 12000 },
+  { value: 'familiar', label: 'Familiar', amount: 19000 },
+  { value: 'colegial', label: 'Colegial', amount: 15000 },
+  { value: 'semanal', label: 'Semanal', amount: 6500 },
+  { value: 'sesion', label: 'Sesión', amount: 2500 }
 ];
 
 const Payment = () => {
@@ -21,13 +21,16 @@ const Payment = () => {
   const navigate = useNavigate();
   const user = location.state ? location.state.user : null;
   const [plan, setPlan] = useState('');
+  const [amount, setAmount] = useState(0);
 
   if (!user) {
     return <Typography variant="h6">No user selected for payment.</Typography>;
   }
 
   const handlePlanChange = (event) => {
+    const selectedPlan = plans.find(p => p.value === event.target.value);
     setPlan(event.target.value);
+    setAmount(selectedPlan.amount);
   };
 
   const handleRegisterPayment = async () => {
@@ -55,9 +58,10 @@ const Payment = () => {
     }
 
     try {
-      await axios.post('https://energy-e6xp.onrender.com/users/api/register-payment/', {
+      await apiClient.post('/users/api/register-payment/', {
         user_id: user.id,
         plan,
+        amount,
         membership_expiration: membershipExpiration.toISOString().split('T')[0],
       });
       navigate('/users');
@@ -138,6 +142,9 @@ const Payment = () => {
                         </MenuItem>
                       ))}
                     </TextField>
+                    <Typography variant="h6" sx={{ mt: 2 }}>
+                      Precio: ₡{amount}
+                    </Typography>
                     <Button
                       variant="contained"
                       color="success"

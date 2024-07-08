@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import apiClient from './apiClient';
 import Avatar from '@mui/material/Avatar';
@@ -7,22 +7,21 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import AppAppBar from './AppAppBar';
 import Footer from './Footer';
-import { createGlobalStyle } from 'styled-components';
 import theme from '../theme';
+import EditIcon from '@mui/icons-material/Edit';
+import CircularProgress from '@mui/material/CircularProgress';
+import { createGlobalStyle } from 'styled-components';
 
 const customTheme = createTheme(theme);
-
 const GlobalStyle = createGlobalStyle`
   body, html, #root {
     background-color: #000000;
@@ -31,19 +30,49 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-export default function SignUp() {
+export default function UpdateUser() {
+  const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState('');
   const [formData, setFormData] = useState({
     national_id: '',
     first_name: '',
     last_name: '',
-    password: '',
     date_born: '',
     emergency_contact: '',
     membership_expiration: '',
   });
-  const [userType, setUserType] = useState('regular');
+  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await apiClient.get('/users/api/users/');
+        setUsers(response.data);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  const handleUserChange = (event) => {
+    const userId = event.target.value;
+    setSelectedUser(userId);
+    const user = users.find((user) => user.id === userId);
+    if (user) {
+      setFormData({
+        national_id: user.national_id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        date_born: user.date_born,
+        emergency_contact: user.emergency_contact,
+        membership_expiration: user.membership_expiration,
+      });
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -52,21 +81,20 @@ export default function SignUp() {
     });
   };
 
-  const handleUserTypeChange = (event) => {
-    setUserType(event.target.value);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      const response = await apiClient.post(userType === 'regular' ? '/users/register/' : '/users/register/admin/', formData);
-      if (response.status === 201) {
-        navigate('/signin');
+      const response = await apiClient.put(`/users/api/users/${selectedUser}/`, formData);
+      if (response.status === 200) {
+        navigate('/users');
       }
     } catch (error) {
       if (error.response && error.response.data) {
         setErrors(error.response.data);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -98,25 +126,29 @@ export default function SignUp() {
         >
           <Container sx={{ textAlign: 'center', mb: 5 }}>
             <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-              <LockOutlinedIcon />
+              <EditIcon />
             </Avatar>
-            <Typography component="h1" variant="h5" sx={{ color: '#ffffff' }}>
-              Registro de usuarios
+            <Typography component="h1" variant="h5" sx={{ color: '#ffffff', textAlign: 'center' }}>
+              Actualizar usuario
             </Typography>
+            <FormControl fullWidth sx={{ mt: 3, mb: 2 }}>
+              <InputLabel id="select-user-label">Seleccionar usuario</InputLabel>
+              <Select
+                labelId="select-user-label"
+                id="select-user"
+                value={selectedUser}
+                label="Select User"
+                onChange={handleUserChange}
+                sx={{ color: '#ffffff', textAlign: 'left' }}
+              >
+                {users.map((user) => (
+                  <MenuItem key={user.id} value={user.id}>
+                    {user.first_name} {user.last_name} ({user.national_id})
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-              <FormControl component="fieldset" sx={{ mb: 2 }}>
-                <FormLabel component="legend" sx={{ color: '#ffffff' }}>Tipo de usuario</FormLabel>
-                <RadioGroup
-                  row
-                  aria-label="userType"
-                  name="userType"
-                  value={userType}
-                  onChange={handleUserTypeChange}
-                >
-                  <FormControlLabel value="regular" control={<Radio />} label="Usuario regular" sx={{ color: '#ffffff' }}/>
-                  <FormControlLabel value="admin" control={<Radio />} label="Usuario administrador" sx={{ color: '#ffffff' }}/>
-                </RadioGroup>
-              </FormControl>
               <Grid container spacing={2}>
               <Grid item xs={12}>
                   <Typography sx={{ color: '#ffffff', textAlign: 'left' }}>Cédula</Typography>
@@ -226,43 +258,6 @@ export default function SignUp() {
                     }}
                   />
                 </Grid>
-                {userType === 'admin' && (
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      name="password"
-                      type="password"
-                      id="password"
-                      autoComplete="new-password"
-                      value={formData.password}
-                      onChange={handleChange}
-                      error={!!errors.password}
-                      helperText={errors.password}
-                      placeholder="Clave"
-                      sx={{
-                        backgroundColor: '#ffffff',
-                        borderRadius: '5px',
-                        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
-                        input: {
-                          color: '#000000',
-                          padding: '10px 14px',
-                        },
-                        '& .MuiOutlinedInput-root': {
-                          '& fieldset': {
-                            borderColor: 'transparent',
-                          },
-                          '&:hover fieldset': {
-                            borderColor: '#00e676',
-                          },
-                          '&.Mui-focused fieldset': {
-                            borderColor: '#00e676',
-                          },
-                        },
-                      }}
-                    />
-                  </Grid>
-                )}
                 <Grid item xs={12}>
                   <Typography sx={{ color: '#ffffff', textAlign: 'left' }}>Fecha nacimiento</Typography>
                 </Grid>
@@ -337,7 +332,7 @@ export default function SignUp() {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography sx={{ color: '#ffffff', textAlign: 'left' }}>Fecha expiración membresía</Typography>
+                  <Typography sx={{ color: '#ffffff', textAlign: 'left' }}>Expiración membresía</Typography>
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -346,7 +341,7 @@ export default function SignUp() {
                     type="date"
                     name="membership_expiration"
                     id="membership_expiration"
-                    autoComplete="membresia"
+                    autoComplete="membership-expiration"
                     value={formData.membership_expiration}
                     onChange={handleChange}
                     error={!!errors.membership_expiration}
@@ -379,8 +374,9 @@ export default function SignUp() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                disabled={loading}
               >
-                Registrarse
+                {loading ? <CircularProgress size={24} color="inherit" /> : 'Actualizar usuario'}
               </Button>
             </Box>
           </Container>
@@ -390,3 +386,5 @@ export default function SignUp() {
     </ThemeProvider>
   );
 }
+
+                     

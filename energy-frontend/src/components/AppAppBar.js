@@ -11,8 +11,6 @@ import MenuItem from '@mui/material/MenuItem';
 import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import ToggleColorMode from './ToggleColorMode';
-import logo from '../assets/logo.jpeg'; // Import your logo
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useContext } from 'react';
 import AuthContext from '../contexts/AuthContext';
@@ -20,7 +18,7 @@ import registerIcon from '../assets/dumbbell.png';
 import Menu from '@mui/material/Menu';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-function AppAppBar({ mode, toggleColorMode }) {
+function AppAppBar({ mode }) {
   const [open, setOpen] = React.useState(false);
   const { user, logoutUser } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -121,12 +119,16 @@ function AppAppBar({ mode, toggleColorMode }) {
                     <MenuItem component={Link} to="/signup" onClick={handleUserOptionsClose}>
                       Añadir Usuarios
                     </MenuItem>
+                    <MenuItem component={Link} to="/update-user" onClick={handleUserOptionsClose}>
+                      Editar Usuarios
+                    </MenuItem>
                   </Menu>
                 </>
               )}
               {user && (
                 <Button color="success" component={Link} to="/expired-memberships">MEMBRESÍAS EXPIRADAS</Button>
               )}
+              <Button color="success" component={Link} to="/class-registrations">USUARIOS EN CLASE</Button>
             </Box>
           </Box>
           <Box
@@ -136,7 +138,6 @@ function AppAppBar({ mode, toggleColorMode }) {
               alignItems: 'center',
             }}
           >
-            <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
             {!user ? (
               <>
                 <Button color="success" component={Link} to="/signin" variant="text" size="small">
@@ -147,7 +148,19 @@ function AppAppBar({ mode, toggleColorMode }) {
                 </Button>
               </>
             ) : (
-              <Button color="success" variant="text" size="small" onClick={logoutUser}>
+              <Button
+                color="secondary"
+                variant="contained"
+                size="small"
+                onClick={logoutUser}
+                sx={{
+                  backgroundColor: '#000000',
+                  color: '#ffffff',
+                  '&:hover': {
+                    backgroundColor: '#333333',
+                  },
+                }}
+              >
                 Cerrar Sesión
               </Button>
             )}
@@ -165,7 +178,6 @@ function AppAppBar({ mode, toggleColorMode }) {
                     justifyContent: 'space-between',
                   }}
                 >
-                  <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
                   <IconButton onClick={toggleDrawer(false)}>
                     <CloseRoundedIcon />
                   </IconButton>
@@ -174,11 +186,13 @@ function AppAppBar({ mode, toggleColorMode }) {
                 <MenuItem component={Link} to="/">INICIO</MenuItem>
                 <MenuItem component={Link} to="/classes">HORARIOS</MenuItem>
                 <MenuItem onClick={handlePricingClick}>PRECIOS</MenuItem>
+                <MenuItem component={Link} to="/class-registrations">USUARIOS EN CLASE</MenuItem>
                 {user && (
                   <>
                     <MenuItem component={Link} to="/users">Ver Usuarios</MenuItem>
                     <MenuItem component={Link} to="/delete-user">Eliminar Usuarios</MenuItem>
                     <MenuItem component={Link} to="/signup">Añadir Usuarios</MenuItem>
+                    <MenuItem component={Link} to="/update-user">Editar Usuarios</MenuItem>
                   </>
                 )}
                 <Divider sx={{ my: 3 }} />
@@ -193,7 +207,19 @@ function AppAppBar({ mode, toggleColorMode }) {
                   </>
                 ) : (
                   <MenuItem>
-                    <Button color="primary" variant="text" fullWidth onClick={logoutUser}>
+                    <Button
+                      color="secondary"
+                      variant="contained"
+                      fullWidth
+                      onClick={logoutUser}
+                      sx={{
+                        backgroundColor: '#000000',
+                        color: '#ffffff',
+                        '&:hover': {
+                          backgroundColor: '#333333',
+                        },
+                      }}
+                    >
                       Cerrar Sesión
                     </Button>
                   </MenuItem>
@@ -209,7 +235,6 @@ function AppAppBar({ mode, toggleColorMode }) {
 
 AppAppBar.propTypes = {
   mode: PropTypes.oneOf(['dark', 'light']).isRequired,
-  toggleColorMode: PropTypes.func.isRequired,
 };
 
 export default AppAppBar;
