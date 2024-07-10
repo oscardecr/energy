@@ -1,7 +1,19 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import apiClient from './apiClient';
-import { Box, Container, Typography, Grid, Card, CardContent, TextField, MenuItem, Button, CssBaseline, GlobalStyles } from '@mui/material';
+import {
+  Box,
+  Container,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  TextField,
+  MenuItem,
+  Button,
+  CssBaseline,
+  GlobalStyles
+} from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import AppAppBar from './AppAppBar'; // Import AppAppBar
 import Footer from './Footer'; // Import Footer
@@ -13,7 +25,8 @@ const plans = [
   { value: 'familiar', label: 'Familiar', amount: 19000 },
   { value: 'colegial', label: 'Colegial', amount: 15000 },
   { value: 'semanal', label: 'Semanal', amount: 6500 },
-  { value: 'sesion', label: 'Sesión', amount: 2500 }
+  { value: 'sesion', label: 'Sesión', amount: 2500 },
+  { value: 'courtesy', label: 'Cortesía', amount: 0 }
 ];
 
 const Payment = () => {
@@ -51,6 +64,9 @@ const Payment = () => {
         break;
       case 'sesion':
         membershipExpiration = new Date(today.setDate(today.getDate() + 1));
+        break;
+      case 'courtesy':
+        membershipExpiration = user.membership_expiration; // No change for courtesy
         break;
       default:
         membershipExpiration = user.membership_expiration;

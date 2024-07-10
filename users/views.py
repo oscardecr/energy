@@ -133,6 +133,8 @@ def register_payment(request):
         new_expiration = today + timedelta(days=8)
     elif plan == 'sesion':
         new_expiration = today + timedelta(days=1)
+    elif plan == 'cortesia':
+        new_expiration = today + timedelta(days=30)
     else:
         return Response({'error': 'Invalid plan'}, status=status.HTTP_400_BAD_REQUEST)
     
