@@ -1,7 +1,19 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import apiClient from './apiClient';
-import { Box, Container, Typography, Grid, Card, CardContent, TextField, MenuItem, Button, CssBaseline, GlobalStyles } from '@mui/material';
+import {
+  Box,
+  Container,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  TextField,
+  MenuItem,
+  Button,
+  CssBaseline,
+  GlobalStyles
+} from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import AppAppBar from './AppAppBar'; // Import AppAppBar
 import Footer from './Footer'; // Import Footer
@@ -13,7 +25,8 @@ const plans = [
   { value: 'familiar', label: 'Familiar', amount: 19000 },
   { value: 'colegial', label: 'Colegial', amount: 15000 },
   { value: 'semanal', label: 'Semanal', amount: 6500 },
-  { value: 'sesion', label: 'Sesión', amount: 2500 }
+  { value: 'sesion', label: 'Sesión', amount: 2500 },
+  { value: 'courtesy', label: 'Cortesía', amount: 0 }
 ];
 
 const Payment = () => {
@@ -35,29 +48,38 @@ const Payment = () => {
 
   const handleRegisterPayment = async () => {
     const today = new Date();
-    let membershipExpiration;
+    let membershipExpiration = null;
 
     switch (plan) {
-      case 'mes':
-      case 'familiar':
-      case 'colegial':
-        membershipExpiration = new Date(today.setMonth(today.getMonth() + 1));
+      case 'Regular':
+      case 'Familiar':
+      case 'Colegial':
+      case 'Cortesía':
+        membershipExpiration = new Date(today.setDate(today.getDate() + 31));
         break;
-      case 'quincena':
+      case 'Quincena':
         membershipExpiration = new Date(today.setDate(today.getDate() + 15));
         break;
-      case 'semanal':
+      case 'Semanal':
         membershipExpiration = new Date(today.setDate(today.getDate() + 8));
         break;
-      case 'sesion':
+      case 'Sesion':
         membershipExpiration = new Date(today.setDate(today.getDate() + 1));
         break;
       default:
-        membershipExpiration = user.membership_expiration;
+        membershipExpiration = new Date(user.membership_expiration);
         break;
     }
 
+    const payload = {
+      user: user.id,  // Ensure this field is always included
+      plan,
+      amount,
+      membership_expiration: membershipExpiration ? membershipExpiration.toISOString().split('T')[0] : null,
+    };
+
     try {
+      await apiClient.post('/finance/payments/', payload);
       await apiClient.post('/users/api/register-payment/', {
         user_id: user.id,
         plan,
@@ -67,7 +89,11 @@ const Payment = () => {
       navigate('/users');
     } catch (error) {
       console.error('Error registering payment:', error);
+      if (error.response) {
+        console.error('Response data:', error.response.data);
+      }
     }
+
   };
 
   return (

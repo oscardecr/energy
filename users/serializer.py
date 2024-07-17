@@ -9,8 +9,8 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'id', 'first_name', 'last_name', 'national_id', 'date_born',
-            'emergency_contact', 'active', 'class_assigned', 'membership_expiration',
-            'password', 'visits_per_month'
+            'emergency_contact', 'phone_number', 'active', 'class_assigned', 'membership_expiration',
+            'password', 'visits_per_month', 'plan_type'
         ]
         extra_kwargs = {
             'password': {'write_only': True, 'required': False}  # Make password optional
@@ -33,5 +33,3 @@ class UserSerializer(serializers.ModelSerializer):
             month = visit.timestamp.strftime("%B %Y")
             visits_per_month[month] += 1
         return visits_per_month
-
-

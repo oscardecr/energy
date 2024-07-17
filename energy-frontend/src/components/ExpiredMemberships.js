@@ -58,7 +58,7 @@ const ExpiredMemberships = () => {
           }}
         >
           <Container sx={{ textAlign: 'center', mb: 5 }}>
-            <Typography variant="h2" gutterBottom>
+            <Typography variant="h2" gutterBottom sx={{ color: '#ffffff' }}>
               Usuarios con Membresías Expiradas
             </Typography>
             {loading ? (

@@ -96,6 +96,7 @@ function AppAppBar({ mode }) {
               <Button color="success" component={Link} to="/">INICIO</Button>
               <Button color="success" component={Link} to="/classes">HORARIOS</Button>
               <Button color="success" onClick={handlePricingClick}>PRECIOS</Button>
+              <Button color="success" component={Link} to="/monthly-incomes">INGRESOS</Button>
               {user && (
                 <>
                   <Button
@@ -186,6 +187,7 @@ function AppAppBar({ mode }) {
                 <MenuItem component={Link} to="/">INICIO</MenuItem>
                 <MenuItem component={Link} to="/classes">HORARIOS</MenuItem>
                 <MenuItem onClick={handlePricingClick}>PRECIOS</MenuItem>
+                <MenuItem omponent={Link} to="/monthly-incomes">INGRESOS</MenuItem>
                 <MenuItem component={Link} to="/class-registrations">USUARIOS EN CLASE</MenuItem>
                 {user && (
                   <>

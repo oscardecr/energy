@@ -10,7 +10,6 @@ import { visuallyHidden } from '@mui/utils';
 import apiClient from './apiClient';
 import registerIcon from '../assets/verify.png';
 
-
 export default function Hero() {
   const [nationalId, setNationalId] = React.useState('');
   const [message, setMessage] = React.useState('');
@@ -20,6 +19,12 @@ export default function Hero() {
     try {
       const response = await apiClient.post('/users/register-visit/', { national_id: nationalId });
       setMessage(response.data.message);
+      setNationalId(''); // Clear the national ID field
+
+      // Clear the message after 5 seconds
+      setTimeout(() => {
+        setMessage('');
+      }, 5000);
     } catch (error) {
       if (error.response) {
         // The request was made and the server responded with a status code
@@ -71,21 +76,12 @@ export default function Hero() {
               color: (theme) => theme.palette.success.main,
             }}
           >
-            Energy&nbsp;Training&nbsp;Center
-          </Typography>
-          <Typography
-            sx={{
-              textAlign: 'center',
-              color: 'white',
-              width: { sm: '100%', md: '80%' },
-            }}
-          >
-            Bienvenido al sitio web de Energy Training Center localizado en San Rafael de Poas, Alajuela.
+            Bienvenido&nbsp;a&nbsp;Energy&nbsp;Training&nbsp;Center&nbsp;
           </Typography>
           <form onSubmit={handleRegister} style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
             <Stack
               direction={{ xs: 'column', sm: 'row' }}
-              spacing={1}
+              spacing={2}
               useFlexGap
               sx={{ pt: 2, width: { xs: '100%', sm: 'auto' } }}
             >
@@ -95,7 +91,7 @@ export default function Hero() {
               <TextField
                 id="national-id"
                 hiddenLabel
-                size="small"
+                size="medium"
                 variant="outlined"
                 aria-label="Introduce tu cédula de identidad"
                 placeholder="Cédula de identidad"
@@ -106,8 +102,9 @@ export default function Hero() {
                   borderRadius: '5px',
                   boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
                   input: {
-                    color: '#000000', // Text color
-                    padding: '10px 14px',
+                    color: '#000000',
+                    padding: '16px 20px', // Increase padding for a bigger input field
+                    fontSize: '1.2rem', // Increase font size
                   },
                   '& .MuiOutlinedInput-root': {
                     '& fieldset': {
@@ -126,7 +123,11 @@ export default function Hero() {
                 type="submit"
                 variant="contained"
                 color="success"
-                startIcon={<img src={registerIcon} alt="logo" style={{ width: 20, height: 20 }} />} // Add the logo as an icon
+                startIcon={<img src={registerIcon} alt="logo" style={{ width: 30, height: 30 }} />} // Increase icon size
+                sx={{
+                  fontSize: '1.2rem', // Increase button text size
+                  padding: '16px 20px', // Increase padding for a bigger button
+                }}
               >
                 Registrarse
               </Button>

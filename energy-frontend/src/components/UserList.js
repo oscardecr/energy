@@ -126,6 +126,8 @@ const UserList = () => {
                         <Typography variant="body2">Fecha Nacimiento: {user.date_born}</Typography>
                         <Typography variant="body2">Contacto Emeergencia: {user.emergency_contact}</Typography>
                         <Typography variant="body2">Caducidad Membresía: {user.membership_expiration}</Typography>
+                        <Typography variant="body2">Teléfono: {user.phone_number}</Typography>
+                        <Typography variant="body2">Tipo plan: {user.plan_type}</Typography>
                         <Typography variant="body2">Visitas por mes:</Typography>
                         {user.visits_per_month ? (
                           <ul>
