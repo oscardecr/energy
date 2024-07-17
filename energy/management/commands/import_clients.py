@@ -7,7 +7,7 @@ class Command(BaseCommand):
     help = 'Imports clients from an Excel file'
 
     def handle(self, *args, **kwargs):
-        file_path = 'energy/management/commands/Lista de Clientes.xlsx'
+        file_path = 'energy/management/commands/Clientes Sistema.xlsx'
         df = pd.read_excel(file_path)
 
         for index, row in df.iterrows():
@@ -21,24 +21,24 @@ class Command(BaseCommand):
 
             national_id = row['Cedula']
 
-            # Handle date parsing with error handling
-            try:
-                date_born = pd.to_datetime(row['Fecha de Nacimiento'], errors='raise').date()
-            except Exception as e:
-                self.stdout.write(self.style.WARNING(f"Skipping row {index} due to invalid date: {row['Fecha de Nacimiento']}"))
-                continue
-
             emergency_contact = row['Contacto Emergencia']
+
+            phone_number = row['Telefono']
+
+            membership_expiration = row['Vencimiento de Membresia']
+
+            plan_type = row['Tipo de Plan']
             
             user, created = User.objects.get_or_create(
                 national_id=national_id,
                 defaults={
                     'first_name': first_name,
                     'last_name': last_name,
-                    'date_born': date_born,
                     'emergency_contact': emergency_contact,
                     'password': 'defaultpassword123',  # You may want to set a proper password
-                    'membership_expiration': datetime.now().date() + timedelta(days=365)
+                    'membership_expiration': membership_expiration,
+                    'plan_type': plan_type,
+                    'phone_number': phone_number
                 }
             )
             if created:

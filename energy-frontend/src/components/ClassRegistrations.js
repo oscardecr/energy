@@ -9,7 +9,6 @@ import {
   Card,
   CardContent,
 } from '@mui/material';
-import AppAppBar from './AppAppBar';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import theme from '../theme';
 import { createGlobalStyle } from 'styled-components';
@@ -65,6 +64,33 @@ const ClassRegistration = () => {
     }).format(date);
   };
 
+  const getClassTitle = (date) => {
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+
+    if (hours === 5 && minutes >= 0 && minutes < 60) {
+      return 'Clase de 5:00 AM';
+    } else if (hours === 6 && minutes >= 15 && minutes < 75) {
+      return 'Clase de 6:15 AM';
+    } else if (hours === 7 && minutes >= 30 && minutes < 90) {
+      return 'Clase de 7:30 AM';
+    } else if (hours === 8 && minutes >= 45 && minutes < 105) {
+      return 'Clase de 8:45 AM';
+    } else if (hours === 10 && minutes >= 0 && minutes < 60) {
+      return 'Clase de 10:00 AM';
+    } else if (hours === 16 && minutes >= 15 && minutes < 75) {
+      return 'Clase de 4:15 PM';
+    } else if (hours === 17 && minutes >= 30 && minutes < 90) {
+      return 'Clase de 5:30 PM';
+    } else if (hours === 18 && minutes >= 45 && minutes < 105) {
+      return 'Clase de 6:45 PM';
+    } else if (hours === 20 && minutes >= 0 && minutes < 60) {
+      return 'Clase de 8:00 PM';
+    } else {
+      return 'No hay clase en este momento';
+    }
+  };
+
   return (
     <ThemeProvider theme={customTheme}>
       <CssBaseline />
@@ -78,7 +104,6 @@ const ClassRegistration = () => {
           color: 'text.primary',
         }}
       >
-        <AppAppBar />
         <Box
           sx={{
             display: 'flex',
@@ -96,10 +121,7 @@ const ClassRegistration = () => {
               <img src={logo} alt="Logo" style={{ height: 400 }} />
             </Box>
             <Typography component="h1" variant="h5" sx={{ mb: 3, color: '#ffffff'}}>
-              Usuarios Registrados
-            </Typography>
-            <Typography component="div" variant="h4" sx={{ mb: 3, color: '#ffffff' }}>
-              Hora: {formatTime(currentTime)}
+              {getClassTitle(currentTime)}
             </Typography>
             {loading ? (
               <CircularProgress />
@@ -120,6 +142,14 @@ const ClassRegistration = () => {
                 ))}
               </Grid>
             )}
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <Typography component="div" variant="h4" sx={{ mb: 3, color: '#ffffff' }}>
+              Hora: {formatTime(currentTime)}
+            </Typography>
           </Container>
         </Box>
       </Box>

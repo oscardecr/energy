@@ -11,6 +11,7 @@ from .models import Visit
 from datetime import datetime, timedelta
 from django.utils.timezone import now
 from finance.models import Payment
+from .utils import send_receipt_via_whatsapp
 
 @api_view(['POST'])
 def register_user(request):
@@ -69,9 +70,11 @@ def register_visit(request):
 
     try:
         user = User.objects.get(national_id=national_id)
+        if user.membership_expiration < datetime.today().date():
+            return Response({'error': 'La membresía ha expirado. Por favor renueve su membresía.'}, status=status.HTTP_400_BAD_REQUEST)
     except User.DoesNotExist:
         return Response({'error': 'Usuario no encontrado'}, status=status.HTTP_404_NOT_FOUND)
-    
+
     visit = Visit.objects.create(user=user)
     return Response({'message': f'Visita registrada exitosamente. Bienvenido(a): {user.first_name}'}, status=status.HTTP_201_CREATED)
 
@@ -125,21 +128,25 @@ def register_payment(request):
         return Response({'error': 'Usuario no encontrado'}, status=status.HTTP_404_NOT_FOUND)
     
     today = datetime.today().date()
-    if plan in ['mes', 'familiar', 'colegial']:
-        new_expiration = today + timedelta(days=30)
-    elif plan == 'quincena':
+    if plan in ['Regular', 'Familiar', 'Colegial', 'Cortesía']:
+        new_expiration = today + timedelta(days=31)
+    elif plan == 'Quincena':
         new_expiration = today + timedelta(days=15)
-    elif plan == 'semanal':
+    elif plan == 'Semanal':
         new_expiration = today + timedelta(days=8)
-    elif plan == 'sesion':
+    elif plan == 'Sesion':
         new_expiration = today + timedelta(days=1)
     elif plan == 'cortesia':
         new_expiration = today + timedelta(days=30)
     else:
-        return Response({'error': 'Invalid plan'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': 'El plan no es válido.'}, status=status.HTTP_400_BAD_REQUEST)
     
     payment = Payment.objects.create(user=user, plan=plan, amount=amount, membership_expiration=new_expiration)
     user.membership_expiration = new_expiration
+    user.plan_type = plan
     user.save()
+
+    # Send receipt via WhatsApp
+    send_receipt_via_whatsapp(user, plan, amount, new_expiration)
     
-    return Response({'message': 'Payment registered successfully', 'new_expiration': new_expiration}, status=status.HTTP_200_OK)
+    return Response({'message': 'Pago registrado exitosamente.', 'new_expiration': new_expiration}, status=status.HTTP_200_OK)

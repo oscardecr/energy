@@ -151,6 +151,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'energy.wsgi.application'
 
 
+# WhatsApp Business API settings
+WHATSAPP_API_TOKEN = 'your_whatsapp_api_token'
+
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 

@@ -77,7 +77,7 @@ const MonthlyIncome = () => {
           }}
         >
           <Container sx={{ textAlign: 'center', mb: 5 }}>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h4" gutterBottom sx={{ color: '#ffffff' }}>
               Ingresos Mensuales
             </Typography>
             {loading ? (
