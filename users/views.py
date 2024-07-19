@@ -51,9 +51,9 @@ def user_list(request):
 
 class LoginView(APIView):
     def post(self, request):
-        email = request.data.get('email')
+        national_id = request.data.get('national_id')
         password = request.data.get('password')
-        user = authenticate(username=email, password=password)
+        user = authenticate(username=national_id, password=password)
         if user is not None:
             refresh = RefreshToken.for_user(user)
             return Response({

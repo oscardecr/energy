@@ -94,9 +94,16 @@ function AppAppBar({ mode }) {
             <img src={registerIcon} alt="Energy's Gym Logo" style={{ height: 50, marginRight: 16 }} />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
               <Button color="success" component={Link} to="/">INICIO</Button>
+              {user && (
+                <Button color="success" component={Link} to="/register-to-class">REGISTRO CLASE</Button>
+              )}
+              
               <Button color="success" component={Link} to="/classes">HORARIOS</Button>
               <Button color="success" onClick={handlePricingClick}>PRECIOS</Button>
-              <Button color="success" component={Link} to="/monthly-incomes">INGRESOS</Button>
+              {user && (
+                <Button color="success" component={Link} to="/monthly-incomes">INGRESOS</Button>
+              )}
+              
               {user && (
                 <>
                   <Button
@@ -123,13 +130,15 @@ function AppAppBar({ mode }) {
                     <MenuItem component={Link} to="/update-user" onClick={handleUserOptionsClose}>
                       Editar Usuarios
                     </MenuItem>
+                    <MenuItem component={Link} to="/class-registrations" onClick={handleUserOptionsClose}>
+                      Usuarios en clase
+                    </MenuItem>
+                    <MenuItem component={Link} to="/expired-memberships" onClick={handleUserOptionsClose}>
+                      Usuarios con membresía expirada
+                    </MenuItem>
                   </Menu>
                 </>
               )}
-              {user && (
-                <Button color="success" component={Link} to="/expired-memberships">MEMBRESÍAS EXPIRADAS</Button>
-              )}
-              <Button color="success" component={Link} to="/class-registrations">USUARIOS EN CLASE</Button>
             </Box>
           </Box>
           <Box
@@ -141,12 +150,10 @@ function AppAppBar({ mode }) {
           >
             {!user ? (
               <>
-                <Button color="success" component={Link} to="/signin" variant="text" size="small">
+                <Button color="success" component={Link} to="/signin" variant="contained" size="small">
                   Iniciar Sesión
                 </Button>
-                <Button color="success" component={Link} to="/signup" variant="contained" size="small">
-                  Registrarse
-                </Button>
+
               </>
             ) : (
               <Button
@@ -185,16 +192,21 @@ function AppAppBar({ mode }) {
                 </Box>
                 <Divider sx={{ my: 3 }} />
                 <MenuItem component={Link} to="/">INICIO</MenuItem>
+                {user && (
+                <MenuItem omponent={Link} to="/register-to-class">REGISTRO CLASE</MenuItem>
+                )}
                 <MenuItem component={Link} to="/classes">HORARIOS</MenuItem>
                 <MenuItem onClick={handlePricingClick}>PRECIOS</MenuItem>
+                {user && (
                 <MenuItem omponent={Link} to="/monthly-incomes">INGRESOS</MenuItem>
-                <MenuItem component={Link} to="/class-registrations">USUARIOS EN CLASE</MenuItem>
+                )}
                 {user && (
                   <>
                     <MenuItem component={Link} to="/users">Ver Usuarios</MenuItem>
                     <MenuItem component={Link} to="/delete-user">Eliminar Usuarios</MenuItem>
                     <MenuItem component={Link} to="/signup">Añadir Usuarios</MenuItem>
                     <MenuItem component={Link} to="/update-user">Editar Usuarios</MenuItem>
+                    <MenuItem component={Link} to="/class-registrations">Usuarios en clase</MenuItem>
                   </>
                 )}
                 <Divider sx={{ my: 3 }} />

@@ -1,3 +1,4 @@
+// AuthContext.js
 import React, { createContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import apiClient from '../components/apiClient';
@@ -11,10 +12,10 @@ export const AuthProvider = ({ children }) => {
   });
   const navigate = useNavigate();
 
-  const loginUser = async (email, password) => {
+  const loginUser = async (national_id, password) => {
     try {
       const response = await apiClient.post('/users/api/auth/login/', {
-        email,
+        national_id,
         password,
       });
       localStorage.setItem('authTokens', JSON.stringify(response.data));

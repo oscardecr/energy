@@ -61,7 +61,7 @@ export default function SignUp() {
     try {
       const response = await apiClient.post(userType === 'regular' ? '/users/register/' : '/users/register/admin/', formData);
       if (response.status === 201) {
-        navigate('/signin');
+        navigate('/users');
       }
     } catch (error) {
       if (error.response && error.response.data) {
@@ -380,7 +380,7 @@ export default function SignUp() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Registrarse
+                Registrar
               </Button>
             </Box>
           </Container>
