@@ -1,22 +1,17 @@
 import * as React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Box, GlobalStyles } from '@mui/material';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 import AppAppBar from './AppAppBar';
-import theme from '../theme';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Footer from './Footer';
-import Carousel from '../components/Carousel';  // Import the Carousel component
 import Pricing from '../components/Pricing';  // Import the UserList component
 import backgroundImage from '../assets/background.jpg';  // Import your background image
+import Hero from './Hero'; 
+import theme from '../theme';
 
-export default function Home() {
-  const [mode, setMode] = React.useState('light');
-  const [showCustomTheme] = React.useState(true);
-  const LPtheme = createTheme(theme);
-  const defaultTheme = createTheme({ palette: { mode } });
-
+const ClassRegister = () => {
   return (
-    <ThemeProvider theme={showCustomTheme ? LPtheme : defaultTheme}>
+    <ThemeProvider theme={createTheme(theme)}>
       <CssBaseline />
       <GlobalStyles
         styles={{
@@ -49,11 +44,12 @@ export default function Home() {
             zIndex: 1, // Ensure the Box is above the background
           }}
         >
-          <Carousel />  {/* Add the Carousel component here */}
+          <Hero />
         </Box>
-        <Pricing />
         <Footer />
       </Box>
     </ThemeProvider>
   );
-}
+};
+
+export default ClassRegister;

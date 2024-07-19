@@ -36,9 +36,9 @@ export default function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const email = data.get('email');
+    const national_id = data.get('national_id');
     const password = data.get('password');
-    loginUser(email, password);
+    loginUser(national_id, password);
   };
 
   return (
@@ -57,17 +57,17 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Inicio de Sesión
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="national_id"
+              label="Cédula"
+              name="national_id"
+              autoComplete="national_id"
               autoFocus
             />
             <TextField
@@ -75,14 +75,14 @@ export default function SignIn() {
               required
               fullWidth
               name="password"
-              label="Password"
+              label="Contraseña"
               type="password"
               id="password"
               autoComplete="current-password"
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              label="Recordarme"
             />
             <Button
               type="submit"
@@ -90,9 +90,9 @@ export default function SignIn() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Iniciar Sesión
             </Button>
-            <Grid container>
+            {/* <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
                   Forgot password?
@@ -102,11 +102,11 @@ export default function SignIn() {
                 <Link href="#" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
-              </Grid>
-            </Grid>
+              </Grid> */}
+            {/* </Grid> */}
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
+
       </Container>
     </ThemeProvider>
   );

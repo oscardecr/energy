@@ -15,6 +15,7 @@ import DeleteUser from './components/DeleteUser';
 import UpdateUser from './components/UpdateUser';
 import ClassRegistrations from './components/ClassRegistrations';
 import MonthlyIncome from './components/MonthlyIncome';
+import ClassRegister from './components/ClassRegister';
 
 function App() {
   const [mode, setMode] = useState('light');
@@ -47,6 +48,7 @@ function App() {
         <Route path="/update-user/" element={<UpdateUser />} /> 
         <Route path="/class-registrations" element={<ClassRegistrations />} />
         <Route path="/monthly-incomes" element={<MonthlyIncome />} />
+        <Route path="/register-to-class" element={<ClassRegister />} />
       </Routes>
     </AuthProvider>
   );
