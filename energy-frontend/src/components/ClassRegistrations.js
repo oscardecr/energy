@@ -41,9 +41,9 @@ const ClassRegistration = () => {
         setLoading(false);
       }
     };
-
+  
     fetchUsers();
-    const interval = setInterval(fetchUsers, 4500000); // Refresh every 1 hour 15 minutes
+    const interval = setInterval(fetchUsers, 300000); // Refresh every 5 minutes (300,000 ms)
     return () => clearInterval(interval);
   }, []);
 
