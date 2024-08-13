@@ -16,34 +16,25 @@ import AppAppBar from './AppAppBar'; // Import AppAppBar
 import Footer from './Footer'; // Import Footer
 import theme from '../theme';
 
-const MONTHS_IN_SPANISH = [
-  'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-  'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-];
-
-const MonthlyIncome = () => {
-  const [monthlyIncomes, setMonthlyIncomes] = useState({});
+const IncomesByUser = () => {
+  const [userIncomes, setUserIncomes] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchMonthlyIncomes = async () => {
+    const fetchUserIncomes = async () => {
       try {
-        const response = await apiClient.get('finance/monthly-incomes-by-payment-method/');
-        setMonthlyIncomes(response.data);
+        const response = await apiClient.get('/finance/incomes-by-user/');
+        console.log('Fetched user incomes:', response.data); // Debugging
+        setUserIncomes(response.data);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching monthly incomes:', error);
+        console.error('Error fetching incomes by user:', error);
         setLoading(false);
       }
     };
 
-    fetchMonthlyIncomes();
+    fetchUserIncomes();
   }, []);
-
-  const getMonthInSpanish = (month) => {
-    const monthIndex = month - 1; // Adjust for 0-indexed month array
-    return MONTHS_IN_SPANISH[monthIndex];
-  };
 
   return (
     <ThemeProvider theme={createTheme(theme)}>
@@ -78,25 +69,25 @@ const MonthlyIncome = () => {
         >
           <Container sx={{ textAlign: 'center', mb: 5 }}>
             <Typography variant="h4" gutterBottom sx={{ color: '#ffffff' }}>
-              Ingresos Mensuales
+              Ingresos por Usuario
             </Typography>
             {loading ? (
               <CircularProgress />
             ) : (
               <Grid container spacing={4}>
-                {Object.entries(monthlyIncomes).map(([year, months]) => (
-                  Object.entries(months).map(([month, paymentMethods]) => (
-                    <Grid item xs={12} sm={6} md={4} key={`${year}-${month}`}>
-                      <Card sx={{ backgroundColor: '#333333', color: '#ffffff' }}>
-                        <CardContent>
-                          <Typography variant="h6">{`${getMonthInSpanish(month)} ${year}`}</Typography>
-                          {Object.entries(paymentMethods).map(([method, total]) => (
-                            <Typography variant="body1" key={method}>{`${method}: ₡${total}`}</Typography>
-                          ))}
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                  ))
+                {Object.entries(userIncomes).map(([user, incomes]) => (
+                  <Grid item xs={12} sm={6} md={4} key={user}>
+                    <Card sx={{ backgroundColor: '#333333', color: '#ffffff' }}>
+                      <CardContent>
+                        <Typography variant="h6">{user}</Typography>
+                        {incomes.map((income, index) => (
+                          <Typography variant="body1" key={index}>
+                            {`${income.payment_method}: ₡${income.total_income.toFixed(2)} - ${income.payment_date}`}
+                          </Typography>
+                        ))}
+                      </CardContent>
+                    </Card>
+                  </Grid>
                 ))}
               </Grid>
             )}
@@ -108,4 +99,4 @@ const MonthlyIncome = () => {
   );
 };
 
-export default MonthlyIncome;
+export default IncomesByUser;

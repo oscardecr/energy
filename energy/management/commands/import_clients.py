@@ -7,7 +7,7 @@ class Command(BaseCommand):
     help = 'Imports clients from an Excel file'
 
     def handle(self, *args, **kwargs):
-        file_path = 'energy/management/commands/Clientes Sistema.xlsx'
+        file_path = 'energy/management/commands/users_178.xlsx'
         df = pd.read_excel(file_path)
 
         for index, row in df.iterrows():

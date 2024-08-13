@@ -13,18 +13,20 @@ import registerIcon from '../assets/verify.png';
 export default function Hero() {
   const [nationalId, setNationalId] = React.useState('');
   const [message, setMessage] = React.useState('');
+  const [warning, setWarning] = React.useState('');
 
   const handleRegister = async (event) => {
     event.preventDefault(); // Prevent the form from reloading the page
     try {
       const response = await apiClient.post('/users/register-visit/', { national_id: nationalId });
-      setMessage(response.data.message);
-      setNationalId(''); // Clear the national ID field
-
-      // Clear the message after 5 seconds
-      setTimeout(() => {
+      if (response.data.warning) {
+        setWarning(response.data.warning);
         setMessage('');
-      }, 5000);
+      } else {
+        setMessage(response.data.message);
+        setWarning('');
+      }
+      setNationalId(''); // Clear the national ID field
     } catch (error) {
       if (error.response) {
         // The request was made and the server responded with a status code
@@ -37,6 +39,7 @@ export default function Hero() {
         // Something happened in setting up the request that triggered an Error
         setMessage('Error in request setup.');
       }
+      setWarning('');
     }
   };
 
@@ -72,8 +75,8 @@ export default function Hero() {
               display: 'flex',
               flexDirection: { xs: 'column', sm: 'row' },
               alignItems: 'center',
-              fontSize: { xs: '2rem', sm: '3rem', md: '3.5rem' }, // Adjust font size for different screen sizes
-              color: (theme) => theme.palette.success.main,
+              fontSize: { xs: '2.5rem', sm: '4rem', md: '4.5rem' }, // Adjust font size for different screen sizes
+              color: '#00e676', // Striking green tone
             }}
           >
             Bienvenido&nbsp;a&nbsp;Energy&nbsp;Training&nbsp;Center&nbsp;
@@ -81,7 +84,7 @@ export default function Hero() {
           <form onSubmit={handleRegister} style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
             <Stack
               direction={{ xs: 'column', sm: 'row' }}
-              spacing={2}
+              spacing={3}
               useFlexGap
               sx={{ pt: 2, width: { xs: '100%', sm: 'auto' } }}
             >
@@ -103,8 +106,8 @@ export default function Hero() {
                   boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
                   input: {
                     color: '#000000',
-                    padding: '16px 20px', // Increase padding for a bigger input field
-                    fontSize: '1.2rem', // Increase font size
+                    padding: '24px 28px', // Increase padding for a bigger input field
+                    fontSize: '1.5rem', // Increase font size
                   },
                   '& .MuiOutlinedInput-root': {
                     '& fieldset': {
@@ -123,10 +126,10 @@ export default function Hero() {
                 type="submit"
                 variant="contained"
                 color="success"
-                startIcon={<img src={registerIcon} alt="logo" style={{ width: 30, height: 30 }} />} // Increase icon size
+                startIcon={<img src={registerIcon} alt="logo" style={{ width: 35, height: 35 }} />} // Increase icon size
                 sx={{
-                  fontSize: '1.2rem', // Increase button text size
-                  padding: '16px 20px', // Increase padding for a bigger button
+                  fontSize: '1.5rem', // Increase button text size
+                  padding: '24px 28px', // Increase padding for a bigger button
                 }}
               >
                 Registrarse
@@ -134,8 +137,13 @@ export default function Hero() {
             </Stack>
           </form>
           {message && (
-            <Typography sx={{ color: 'text.secondary', mt: 2 }}>
+            <Typography sx={{ color: 'lightgreen', mt: 2, fontSize: '1.5rem' }}>
               {message}
+            </Typography>
+          )}
+          {warning && (
+            <Typography sx={{ color: 'orange', mt: 2, fontSize: '1.5rem' }}>
+              {warning}
             </Typography>
           )}
         </Stack>

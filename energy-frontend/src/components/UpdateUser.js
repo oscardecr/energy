@@ -30,6 +30,16 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const planTypes = [
+  'Regular',
+  'Familiar',
+  'Colegial',
+  'Cortesía',
+  'Quincena',
+  'Semanal',
+  'Sesion'
+];
+
 export default function UpdateUser() {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState('');
@@ -149,8 +159,8 @@ export default function UpdateUser() {
               </Select>
             </FormControl>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-              <Grid container spacing={2}>
-              <Grid item xs={12}>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
                   <Typography sx={{ color: '#ffffff', textAlign: 'left' }}>Cédula</Typography>
                 </Grid>
                 <Grid item xs={12}>
@@ -259,20 +269,19 @@ export default function UpdateUser() {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography sx={{ color: '#ffffff', textAlign: 'left' }}>Fecha nacimiento</Typography>
+                  <Typography sx={{ color: '#ffffff', textAlign: 'left' }}>Teléfono</Typography>
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
                     required
                     fullWidth
-                    name="date_born"
-                    type="date"
-                    id="date_born"
-                    InputLabelProps={{ shrink: true }}
-                    value={formData.date_born}
+                    name="phone_number"
+                    id="phone_number"
+                    autoComplete="phone_number"
+                    value={formData.phone_number}
                     onChange={handleChange}
-                    error={!!errors.date_born}
-                    helperText={errors.date_born}
+                    error={!!errors.phone_number}
+                    helperText={errors.phone_number}
                     sx={{
                       backgroundColor: '#ffffff',
                       borderRadius: '5px',
@@ -332,7 +341,7 @@ export default function UpdateUser() {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography sx={{ color: '#ffffff', textAlign: 'left' }}>Expiración membresía</Typography>
+                  <Typography sx={{ color: '#ffffff', textAlign: 'left' }}>Fecha expiración membresía</Typography>
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -341,7 +350,7 @@ export default function UpdateUser() {
                     type="date"
                     name="membership_expiration"
                     id="membership_expiration"
-                    autoComplete="membership-expiration"
+                    autoComplete="membresia"
                     value={formData.membership_expiration}
                     onChange={handleChange}
                     error={!!errors.membership_expiration}
@@ -368,7 +377,50 @@ export default function UpdateUser() {
                     }}
                   />
                 </Grid>
+                <Grid item xs={12}>
+                  <Typography sx={{ color: '#ffffff', textAlign: 'left' }}>Tipo de plan</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    select
+                    fullWidth
+                    name="plan_type"
+                    id="plan_type"
+                    value={formData.plan_type}
+                    onChange={handleChange}
+                    error={!!errors.plan_type}
+                    helperText={errors.plan_type}
+                    sx={{
+                      backgroundColor: '#ffffff',
+                      borderRadius: '5px',
+                      boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+                      input: {
+                        color: '#000000',
+                        padding: '10px 14px',
+                      },
+                      '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                          borderColor: 'transparent',
+                        },
+                        '&:hover fieldset': {
+                          borderColor: '#00e676',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: '#00e676',
+                        },
+                      },
+                    }}
+                  >
+                    {planTypes.map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
               </Grid>
+              
               <Button
                 type="submit"
                 fullWidth

@@ -20,6 +20,7 @@ import AppAppBar from './AppAppBar';
 import Footer from './Footer';
 import { createGlobalStyle } from 'styled-components';
 import theme from '../theme';
+import MenuItem from '@mui/material/MenuItem';
 
 const customTheme = createTheme(theme);
 
@@ -31,6 +32,16 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const planTypes = [
+  'Regular',
+  'Familiar',
+  'Colegial',
+  'Cortesía',
+  'Quincena',
+  'Semanal',
+  'Sesion'
+];
+
 export default function SignUp() {
   const [formData, setFormData] = useState({
     national_id: '',
@@ -39,7 +50,9 @@ export default function SignUp() {
     password: '',
     date_born: '',
     emergency_contact: '',
+    phone_number: '',
     membership_expiration: '',
+    plan_type: '',
   });
   const [userType, setUserType] = useState('regular');
   const [errors, setErrors] = useState({});
@@ -118,7 +131,7 @@ export default function SignUp() {
                 </RadioGroup>
               </FormControl>
               <Grid container spacing={2}>
-              <Grid item xs={12}>
+                <Grid item xs={12}>
                   <Typography sx={{ color: '#ffffff', textAlign: 'left' }}>Cédula</Typography>
                 </Grid>
                 <Grid item xs={12}>
@@ -264,20 +277,19 @@ export default function SignUp() {
                   </Grid>
                 )}
                 <Grid item xs={12}>
-                  <Typography sx={{ color: '#ffffff', textAlign: 'left' }}>Fecha nacimiento</Typography>
+                  <Typography sx={{ color: '#ffffff', textAlign: 'left' }}>Teléfono</Typography>
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
                     required
                     fullWidth
-                    name="date_born"
-                    type="date"
-                    id="date_born"
-                    InputLabelProps={{ shrink: true }}
-                    value={formData.date_born}
+                    name="phone_number"
+                    id="phone_number"
+                    autoComplete="phone_number"
+                    value={formData.phone_number}
                     onChange={handleChange}
-                    error={!!errors.date_born}
-                    helperText={errors.date_born}
+                    error={!!errors.phone_number}
+                    helperText={errors.phone_number}
                     sx={{
                       backgroundColor: '#ffffff',
                       borderRadius: '5px',
@@ -373,6 +385,48 @@ export default function SignUp() {
                     }}
                   />
                 </Grid>
+                <Grid item xs={12}>
+                  <Typography sx={{ color: '#ffffff', textAlign: 'left' }}>Tipo de plan</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    select
+                    fullWidth
+                    name="plan_type"
+                    id="plan_type"
+                    value={formData.plan_type}
+                    onChange={handleChange}
+                    error={!!errors.plan_type}
+                    helperText={errors.plan_type}
+                    sx={{
+                      backgroundColor: '#ffffff',
+                      borderRadius: '5px',
+                      boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+                      input: {
+                        color: '#000000',
+                        padding: '10px 14px',
+                      },
+                      '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                          borderColor: 'transparent',
+                        },
+                        '&:hover fieldset': {
+                          borderColor: '#00e676',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: '#00e676',
+                        },
+                      },
+                    }}
+                  >
+                    {planTypes.map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
               </Grid>
               <Button
                 type="submit"
@@ -390,3 +444,4 @@ export default function SignUp() {
     </ThemeProvider>
   );
 }
+
