@@ -95,14 +95,6 @@ const Payment = () => {
 
     try {
       await apiClient.post('/finance/payments/', payload);
-      const response = await apiClient.post('/users/api/register-payment/', {
-        user_id: user.id,
-        plan,
-        amount,
-        payment_method: paymentMethod,
-        membership_expiration: membershipExpiration.toISOString().split('T')[0],
-      });
-      console.log('Payment response:', response.data);
       
       generatePDF(user, plan, amount, paymentMethod, membershipExpiration);
 
