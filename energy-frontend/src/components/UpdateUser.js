@@ -10,10 +10,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
+import Autocomplete from '@mui/material/Autocomplete';
 import AppAppBar from './AppAppBar';
 import Footer from './Footer';
 import theme from '../theme';
@@ -42,7 +39,7 @@ const planTypes = [
 
 export default function UpdateUser() {
   const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState('');
+  const [selectedUser, setSelectedUser] = useState(null);
   const [formData, setFormData] = useState({
     national_id: '',
     first_name: '',
@@ -50,6 +47,8 @@ export default function UpdateUser() {
     date_born: '',
     emergency_contact: '',
     membership_expiration: '',
+    phone_number: '',
+    plan_type: ''
   });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -68,18 +67,29 @@ export default function UpdateUser() {
     fetchUsers();
   }, []);
 
-  const handleUserChange = (event) => {
-    const userId = event.target.value;
-    setSelectedUser(userId);
-    const user = users.find((user) => user.id === userId);
-    if (user) {
+  const handleUserChange = (event, value) => {
+    setSelectedUser(value);
+    if (value) {
       setFormData({
-        national_id: user.national_id,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        date_born: user.date_born,
-        emergency_contact: user.emergency_contact,
-        membership_expiration: user.membership_expiration,
+        national_id: value.national_id,
+        first_name: value.first_name,
+        last_name: value.last_name,
+        date_born: value.date_born,
+        emergency_contact: value.emergency_contact,
+        membership_expiration: value.membership_expiration,
+        phone_number: value.phone_number,
+        plan_type: value.plan_type || ''
+      });
+    } else {
+      setFormData({
+        national_id: '',
+        first_name: '',
+        last_name: '',
+        date_born: '',
+        emergency_contact: '',
+        membership_expiration: '',
+        phone_number: '',
+        plan_type: ''
       });
     }
   };
@@ -95,7 +105,7 @@ export default function UpdateUser() {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await apiClient.put(`/users/api/users/${selectedUser}/`, formData);
+      const response = await apiClient.put(`/users/api/users/${selectedUser.id}/`, formData);
       if (response.status === 200) {
         navigate('/users');
       }
@@ -141,25 +151,23 @@ export default function UpdateUser() {
             <Typography component="h1" variant="h5" sx={{ color: '#ffffff', textAlign: 'center' }}>
               Actualizar usuario
             </Typography>
-            <FormControl fullWidth sx={{ mt: 3, mb: 2 }}>
-              <InputLabel id="select-user-label">Seleccionar usuario</InputLabel>
-              <Select
-                labelId="select-user-label"
-                id="select-user"
-                value={selectedUser}
-                label="Select User"
-                onChange={handleUserChange}
-                sx={{ color: '#ffffff', textAlign: 'left' }}
-              >
-                {users.map((user) => (
-                  <MenuItem key={user.id} value={user.id}>
-                    {user.first_name} {user.last_name} ({user.national_id})
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <Autocomplete
+              id="select-user"
+              options={users}
+              getOptionLabel={(option) => `${option.first_name} ${option.last_name} (${option.national_id})`}
+              value={selectedUser}
+              onChange={handleUserChange}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Seleccionar usuario"
+                  sx={{ mt: 3, mb: 2, color: '#ffffff', textAlign: 'left' }}
+                  InputLabelProps={{ style: { color: '#ffffff' } }}
+                />
+              )}
+            />
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
+              <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <Typography sx={{ color: '#ffffff', textAlign: 'left' }}>Cédula</Typography>
                 </Grid>
@@ -438,5 +446,3 @@ export default function UpdateUser() {
     </ThemeProvider>
   );
 }
-
-                     
