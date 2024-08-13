@@ -121,7 +121,7 @@ function AppAppBar({ mode }) {
                   endIcon={<ExpandMoreIcon />}
                   onClick={handleIncomeOptionsClick}
                 >
-                  MENU DE INGRESOS
+                  MENU INGRESOS
                 </Button>
                 <Menu
                   anchorEl={incomeOptionsAnchorEl}
