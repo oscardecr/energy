@@ -35,7 +35,7 @@ class Command(BaseCommand):
                     'first_name': first_name,
                     'last_name': last_name,
                     'emergency_contact': emergency_contact,
-                    'password': 'defaultpassword123',  # You may want to set a proper password
+                    'password': 'defaultpassword123',  # You may want to set a proper password.
                     'membership_expiration': membership_expiration,
                     'plan_type': plan_type,
                     'phone_number': phone_number
