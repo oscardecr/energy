@@ -78,6 +78,9 @@ const Payment = () => {
       case 'Sesion':
         membershipExpiration = new Date(today.setDate(today.getDate() + 1));
         break;
+      case 'courtesy':
+        membershipExpiration = user.membership_expiration; // No change for courtesy
+        break;
       default:
         membershipExpiration = new Date(user.membership_expiration);
         break;
