@@ -12,21 +12,28 @@ import {
   MenuItem,
   Button,
   CssBaseline,
-  GlobalStyles
+  GlobalStyles,
+  Radio,
+  RadioGroup,
+  FormControl,
+  FormControlLabel,
+  FormLabel
 } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import AppAppBar from './AppAppBar'; // Import AppAppBar
 import Footer from './Footer'; // Import Footer
 import theme from '../theme';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const plans = [
-  { value: 'mes', label: 'Mes', amount: 21000 },
-  { value: 'quincena', label: 'Quincena', amount: 12000 },
-  { value: 'familiar', label: 'Familiar', amount: 19000 },
-  { value: 'colegial', label: 'Colegial', amount: 15000 },
-  { value: 'semanal', label: 'Semanal', amount: 6500 },
-  { value: 'sesion', label: 'Sesión', amount: 2500 },
-  { value: 'courtesy', label: 'Cortesía', amount: 0 }
+  { value: 'Regular', label: 'Regular', amount: 21000 },
+  { value: 'Quincena', label: 'Quincena', amount: 12000 },
+  { value: 'Familiar', label: 'Familiar', amount: 19000 },
+  { value: 'Colegial', label: 'Colegial', amount: 15000 },
+  { value: 'Semanal', label: 'Semanal', amount: 6500 },
+  { value: 'Sesion', label: 'Sesion', amount: 2500 },
+  { value: 'Cortesía', label: 'Cortesía', amount: 0 }
 ];
 
 const Payment = () => {
@@ -35,6 +42,7 @@ const Payment = () => {
   const user = location.state ? location.state.user : null;
   const [plan, setPlan] = useState('');
   const [amount, setAmount] = useState(0);
+  const [paymentMethod, setPaymentMethod] = useState('SINPE');
 
   if (!user) {
     return <Typography variant="h6">No user selected for payment.</Typography>;
@@ -44,6 +52,10 @@ const Payment = () => {
     const selectedPlan = plans.find(p => p.value === event.target.value);
     setPlan(event.target.value);
     setAmount(selectedPlan.amount);
+  };
+
+  const handlePaymentMethodChange = (event) => {
+    setPaymentMethod(event.target.value);
   };
 
   const handleRegisterPayment = async () => {
@@ -75,17 +87,25 @@ const Payment = () => {
       user: user.id,  // Ensure this field is always included
       plan,
       amount,
+      payment_method: paymentMethod,
       membership_expiration: membershipExpiration ? membershipExpiration.toISOString().split('T')[0] : null,
     };
 
+    console.log('Payload:', payload);
+
     try {
       await apiClient.post('/finance/payments/', payload);
-      await apiClient.post('/users/api/register-payment/', {
+      const response = await apiClient.post('/users/api/register-payment/', {
         user_id: user.id,
         plan,
         amount,
+        payment_method: paymentMethod,
         membership_expiration: membershipExpiration.toISOString().split('T')[0],
       });
+      console.log('Payment response:', response.data);
+      
+      generatePDF(user, plan, amount, paymentMethod, membershipExpiration);
+
       navigate('/users');
     } catch (error) {
       console.error('Error registering payment:', error);
@@ -93,7 +113,23 @@ const Payment = () => {
         console.error('Response data:', error.response.data);
       }
     }
+  };
 
+  const generatePDF = (user, plan, amount, paymentMethod, membershipExpiration) => {
+    const doc = new jsPDF();
+    doc.text(`Resumen de Pago - Energy Training Center\nUsuario: ${user.first_name} ${user.last_name}`, 14, 22);
+    doc.autoTable({
+      startY: 40,
+      head: [['Campo', 'Valor']],
+      body: [
+        ['Nombre', `${user.first_name} ${user.last_name}`],
+        ['Plan', plan],
+        ['Monto', `${amount}`],
+        ['Método de Pago', paymentMethod],
+        ['Fecha de Expiración', membershipExpiration.toISOString().split('T')[0]],
+      ],
+    });
+    doc.save(`Resumen_de_Pago_${user.first_name}_${user.last_name}.pdf`);
   };
 
   return (
@@ -168,6 +204,19 @@ const Payment = () => {
                         </MenuItem>
                       ))}
                     </TextField>
+                    <FormControl component="fieldset" sx={{ mt: 2 }}>
+                      <FormLabel component="legend" sx={{ color: '#ffffff' }}>Método de pago</FormLabel>
+                      <RadioGroup
+                        aria-label="payment_method"
+                        name="payment_method"
+                        value={paymentMethod}
+                        onChange={handlePaymentMethodChange}
+                        row
+                      >
+                        <FormControlLabel value="SINPE" control={<Radio />} label="SINPE" sx={{ color: '#ffffff' }} />
+                        <FormControlLabel value="Efectivo" control={<Radio />} label="Efectivo" sx={{ color: '#ffffff' }} />
+                      </RadioGroup>
+                    </FormControl>
                     <Typography variant="h6" sx={{ mt: 2 }}>
                       Precio: ₡{amount}
                     </Typography>

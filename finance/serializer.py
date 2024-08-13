@@ -4,7 +4,7 @@ from .models import Payment, MonthlyIncome
 class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment
-        fields = ['user', 'plan', 'amount', 'timestamp', 'membership_expiration']
+        fields = ['user', 'plan', 'amount', 'payment_method', 'timestamp', 'membership_expiration']
 
 class MonthlyIncomeSerializer(serializers.ModelSerializer):
     class Meta:

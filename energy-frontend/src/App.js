@@ -16,6 +16,7 @@ import UpdateUser from './components/UpdateUser';
 import ClassRegistrations from './components/ClassRegistrations';
 import MonthlyIncome from './components/MonthlyIncome';
 import ClassRegister from './components/ClassRegister';
+import IncomesByUser from './components/IncomesByUser';
 
 function App() {
   const [mode, setMode] = useState('light');
@@ -49,6 +50,7 @@ function App() {
         <Route path="/class-registrations" element={<ClassRegistrations />} />
         <Route path="/monthly-incomes" element={<MonthlyIncome />} />
         <Route path="/register-to-class" element={<ClassRegister />} />
+        <Route path="/incomes-by-user" element={<IncomesByUser />} />
       </Routes>
     </AuthProvider>
   );

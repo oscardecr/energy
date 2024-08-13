@@ -70,14 +70,19 @@ def register_visit(request):
 
     try:
         user = User.objects.get(national_id=national_id)
-        if user.membership_expiration < datetime.today().date():
+        today = datetime.today().date()
+        expiration_warning_date = today + timedelta(days=7)
+
+        if user.membership_expiration < today:
             return Response({'error': 'La membresía ha expirado. Por favor renueve su membresía.'}, status=status.HTTP_400_BAD_REQUEST)
+        elif today <= user.membership_expiration <= expiration_warning_date:
+            Visit.objects.create(user=user)
+            return Response({'warning': f'Bienvenido(a): {user.first_name}. La membresía está por expirar en los próximos 7 días.', 'message': f'Visita registrada exitosamente. Bienvenido(a): {user.first_name}'}, status=status.HTTP_200_OK)
     except User.DoesNotExist:
         return Response({'error': 'Usuario no encontrado'}, status=status.HTTP_404_NOT_FOUND)
 
-    visit = Visit.objects.create(user=user)
+    Visit.objects.create(user=user)
     return Response({'message': f'Visita registrada exitosamente. Bienvenido(a): {user.first_name}'}, status=status.HTTP_201_CREATED)
-
 
 @api_view(['GET'])
 def expired_memberships(request):
@@ -122,6 +127,11 @@ def register_payment(request):
     user_id = request.data.get('user_id')
     plan = request.data.get('plan')
     amount = request.data.get('amount')
+    payment_method = request.data.get('payment_method')  # Ensure payment_method is fetched
+
+    if not user_id or not plan or not amount or not payment_method:
+        return Response({'error': 'All fields are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
     try:
         user = User.objects.get(id=user_id)
     except User.DoesNotExist:
@@ -129,7 +139,7 @@ def register_payment(request):
     
     today = datetime.today().date()
     if plan in ['Regular', 'Familiar', 'Colegial', 'Cortesía']:
-        new_expiration = today + timedelta(days=31)
+        new_expiration = today + timedelta(days=32)
     elif plan == 'Quincena':
         new_expiration = today + timedelta(days=15)
     elif plan == 'Semanal':
@@ -139,12 +149,9 @@ def register_payment(request):
     else:
         return Response({'error': 'El plan no es válido.'}, status=status.HTTP_400_BAD_REQUEST)
     
-    payment = Payment.objects.create(user=user, plan=plan, amount=amount, membership_expiration=new_expiration)
+    payment = Payment.objects.create(user=user, plan=plan, amount=amount, payment_method=payment_method, membership_expiration=new_expiration)
     user.membership_expiration = new_expiration
     user.plan_type = plan
     user.save()
-
-    # Send receipt via WhatsApp
-    send_receipt_via_whatsapp(user, plan, amount, new_expiration)
     
     return Response({'message': 'Pago registrado exitosamente.', 'new_expiration': new_expiration}, status=status.HTTP_200_OK)

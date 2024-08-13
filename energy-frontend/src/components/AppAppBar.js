@@ -23,7 +23,8 @@ function AppAppBar({ mode }) {
   const { user, logoutUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [userOptionsAnchorEl, setUserOptionsAnchorEl] = React.useState(null);
+  const [incomeOptionsAnchorEl, setIncomeOptionsAnchorEl] = React.useState(null);
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
@@ -58,11 +59,19 @@ function AppAppBar({ mode }) {
   }, [location.state]);
 
   const handleUserOptionsClick = (event) => {
-    setAnchorEl(event.currentTarget);
+    setUserOptionsAnchorEl(event.currentTarget);
   };
 
   const handleUserOptionsClose = () => {
-    setAnchorEl(null);
+    setUserOptionsAnchorEl(null);
+  };
+
+  const handleIncomeOptionsClick = (event) => {
+    setIncomeOptionsAnchorEl(event.currentTarget);
+  };
+
+  const handleIncomeOptionsClose = () => {
+    setIncomeOptionsAnchorEl(null);
   };
 
   return (
@@ -94,14 +103,39 @@ function AppAppBar({ mode }) {
             <img src={registerIcon} alt="Energy's Gym Logo" style={{ height: 50, marginRight: 16 }} />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
               <Button color="success" component={Link} to="/">INICIO</Button>
-              {user && (
-                <Button color="success" component={Link} to="/register-to-class">REGISTRO CLASE</Button>
-              )}
-              
+
+              <Button color="success" component={Link} to="/register-to-class">REGISTRO CLASE</Button>
+              {!user && (
               <Button color="success" component={Link} to="/classes">HORARIOS</Button>
-              <Button color="success" onClick={handlePricingClick}>PRECIOS</Button>
+              )}
               {user && (
-                <Button color="success" component={Link} to="/monthly-incomes">INGRESOS</Button>
+              <Button color="success" component={Link} to="/class-registrations">USUARIOS EN CLASE</Button>
+              )}
+              {!user && (
+              <Button color="success" onClick={handlePricingClick}>PRECIOS</Button>
+              )}
+              {user && (
+                <>
+                <Button
+                  color="success"
+                  endIcon={<ExpandMoreIcon />}
+                  onClick={handleIncomeOptionsClick}
+                >
+                  MENU INGRESOS
+                </Button>
+                <Menu
+                  anchorEl={incomeOptionsAnchorEl}
+                  open={Boolean(incomeOptionsAnchorEl)}
+                  onClose={handleIncomeOptionsClose}
+                >
+                  <MenuItem component={Link} to="/monthly-incomes" onClick={handleIncomeOptionsClose}>
+                    Ingresos mensuales
+                  </MenuItem>
+                  <MenuItem component={Link} to="/incomes-by-user" onClick={handleIncomeOptionsClose}>
+                    Ingresos por Usuario
+                  </MenuItem>
+                </Menu>
+              </>
               )}
               
               {user && (
@@ -114,8 +148,8 @@ function AppAppBar({ mode }) {
                     OPCIONES DE USUARIOS
                   </Button>
                   <Menu
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
+                    anchorEl={userOptionsAnchorEl}
+                    open={Boolean(userOptionsAnchorEl)}
                     onClose={handleUserOptionsClose}
                   >
                     <MenuItem component={Link} to="/users" onClick={handleUserOptionsClose}>
@@ -193,12 +227,14 @@ function AppAppBar({ mode }) {
                 <Divider sx={{ my: 3 }} />
                 <MenuItem component={Link} to="/">INICIO</MenuItem>
                 {user && (
-                <MenuItem omponent={Link} to="/register-to-class">REGISTRO CLASE</MenuItem>
+                <MenuItem component={Link} to="/register-to-class">REGISTRO CLASE</MenuItem>
                 )}
+                {user && (
                 <MenuItem component={Link} to="/classes">HORARIOS</MenuItem>
+                )}
                 <MenuItem onClick={handlePricingClick}>PRECIOS</MenuItem>
                 {user && (
-                <MenuItem omponent={Link} to="/monthly-incomes">INGRESOS</MenuItem>
+                <MenuItem component={Link} to="/monthly-incomes">INGRESOS</MenuItem>
                 )}
                 {user && (
                   <>
