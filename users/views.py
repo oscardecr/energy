@@ -15,7 +15,7 @@ from .utils import send_receipt_via_whatsapp
 
 @api_view(['POST'])
 def register_user(request):
-    data = request.data.copy()  # Make a copy of the data
+    data = request.data.copy()  # Make a copy of the data.
     if not data.get('password'):
         data['password'] = None  # Set password to None if not provided
 
