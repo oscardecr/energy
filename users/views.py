@@ -71,13 +71,18 @@ def register_visit(request):
     try:
         user = User.objects.get(national_id=national_id)
         today = datetime.today().date()
-        expiration_warning_date = today + timedelta(days=7)
+        # Calculate days remaining until the membership expires
+        days_until_expiration = (user.membership_expiration - today).days
 
         if user.membership_expiration < today:
             return Response({'error': 'La membresía ha expirado. Por favor renueve su membresía.'}, status=status.HTTP_400_BAD_REQUEST)
-        elif today <= user.membership_expiration <= expiration_warning_date:
+        elif days_until_expiration <= 7:
             Visit.objects.create(user=user)
-            return Response({'warning': f'Bienvenido(a): {user.first_name}. La membresía está por expirar en los próximos 7 días.', 'message': f'Visita registrada exitosamente. Bienvenido(a): {user.first_name}'}, status=status.HTTP_200_OK)
+            return Response({
+                'warning': f'Bienvenido(a): {user.first_name}. La membresía está por expirar en {days_until_expiration} días.',
+                'message': f'Visita registrada exitosamente. Bienvenido(a): {user.first_name}',
+                'days_until_expiration': days_until_expiration
+            }, status=status.HTTP_200_OK)
     except User.DoesNotExist:
         return Response({'error': 'Usuario no encontrado'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -151,7 +156,7 @@ def register_payment(request):
     else:
         return Response({'error': 'El plan no es válido.'}, status=status.HTTP_400_BAD_REQUEST)
     
-    payment = Payment.objects.create(user=user, plan=plan, amount=amount, payment_method=payment_method, membership_expiration=new_expiration)
+    # payment = Payment.objects.create(user=user, plan=plan, amount=amount, payment_method=payment_method, membership_expiration=new_expiration)
     user.membership_expiration = new_expiration
     user.plan_type = plan
     user.save()
