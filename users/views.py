@@ -144,7 +144,7 @@ def register_payment(request):
     
     today = datetime.today().date()
     if plan in ['Regular', 'Familiar', 'Colegial', 'Cortesía']:
-        new_expiration = today + timedelta(days=32)
+        new_expiration = today + timedelta(days=31)
     elif plan == 'Quincena':
         new_expiration = today + timedelta(days=15)
     elif plan == 'Semanal':
