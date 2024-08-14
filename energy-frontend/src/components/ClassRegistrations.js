@@ -15,7 +15,22 @@ import { createGlobalStyle } from 'styled-components';
 import CssBaseline from '@mui/material/CssBaseline';
 import logo from '../assets/logo.jpeg'; // Adjust the path as necessary
 
-const customTheme = createTheme(theme);
+const customTheme = createTheme({
+  ...theme,
+  typography: {
+    ...theme.typography,
+    h1: {
+      fontSize: '6rem', // Increase the size of the class title
+      fontWeight: 'bold',
+    },
+    h4: {
+      fontSize: '4rem', // Increase the size of the time display
+    },
+    h6: {
+      fontSize: '2.5rem', // Increase the size of the user names
+    },
+  },
+});
 
 const GlobalStyle = createGlobalStyle`
   body, html, #root {
@@ -37,11 +52,11 @@ const ClassRegistration = () => {
         setUsers(response.data);
         setLoading(false);
       } catch (error) {
-        console.error('Error obteniendo visitas:', error);
+        console.error('Error obtaining visits:', error);
         setLoading(false);
       }
     };
-  
+
     fetchUsers();
     const interval = setInterval(fetchUsers, 300000); // Refresh every 5 minutes (300,000 ms)
     return () => clearInterval(interval);
@@ -112,21 +127,21 @@ const ClassRegistration = () => {
             justifyContent: 'flex-start',
             flex: 1,
             textAlign: 'center',
-            py: 3,
-            mt: 4,
+            py: 4,
+            mt: 6,
           }}
         >
-          <Container sx={{ textAlign: 'center', mb: 5 }}>
-            <Box sx={{ mb: 3 }}>
-              <img src={logo} alt="Logo" style={{ height: 400 }} />
+          <Container sx={{ textAlign: 'center', mb: 8 }}>
+            <Box sx={{ mb: 5 }}>
+              <img src={logo} alt="Logo" style={{ height: 500 }} /> {/* Increase logo size */}
             </Box>
-            <Typography component="h1" variant="h5" sx={{ mb: 3, color: '#ffffff'}}>
+            <Typography component="h2" variant="h2" sx={{ mb: 5, color: '#ffffff' }}>
               {getClassTitle(currentTime)}
             </Typography>
             {loading ? (
-              <CircularProgress />
+              <CircularProgress size={100} /> // Increase loader size
             ) : (
-              <Grid container spacing={4}>
+              <Grid container spacing={6}>
                 {users.map((user, index) => (
                   user && user.id ? (
                     <Grid item xs={12} sm={6} md={4} key={user.id || index}>
@@ -144,10 +159,7 @@ const ClassRegistration = () => {
             )}
             <br />
             <br />
-            <br />
-            <br />
-            <br />
-            <Typography component="div" variant="h4" sx={{ mb: 3, color: '#ffffff' }}>
+            <Typography component="div" variant="h4" sx={{ mb: 4, color: '#ffffff' }}>
               Hora: {formatTime(currentTime)}
             </Typography>
           </Container>

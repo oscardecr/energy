@@ -78,9 +78,6 @@ const Payment = () => {
       case 'Sesion':
         membershipExpiration = new Date(today.setDate(today.getDate() + 1));
         break;
-      case 'courtesy':
-        membershipExpiration = user.membership_expiration; // No change for courtesy
-        break;
       default:
         membershipExpiration = new Date(user.membership_expiration);
         break;
@@ -98,6 +95,14 @@ const Payment = () => {
 
     try {
       await apiClient.post('/finance/payments/', payload);
+      const response = await apiClient.post('/users/api/register-payment/', {
+        user_id: user.id,
+        plan,
+        amount,
+        payment_method: paymentMethod,
+        membership_expiration: membershipExpiration.toISOString().split('T')[0],
+      });
+      console.log('Payment response:', response.data);
       
       generatePDF(user, plan, amount, paymentMethod, membershipExpiration);
 
