@@ -13,6 +13,7 @@ import registerIcon from '../assets/verify.png';
 export default function Hero() {
   const [nationalId, setNationalId] = React.useState('');
   const [message, setMessage] = React.useState('');
+  const [messageColor, setMessageColor] = React.useState(''); // State for dynamic color
   const [warning, setWarning] = React.useState('');
 
   const handleRegister = async (event) => {
@@ -22,8 +23,10 @@ export default function Hero() {
       if (response.data.warning) {
         setWarning(response.data.warning);
         setMessage('');
+        setMessageColor('');
       } else {
         setMessage(response.data.message);
+        setMessageColor(response.data.style?.color || ''); // Get color from the API response
         setWarning('');
       }
       setNationalId(''); // Clear the national ID field
@@ -32,12 +35,13 @@ export default function Hero() {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
         setMessage(error.response.data.error);
+        setMessageColor(error.response.data.style?.color || 'red'); // Default to red for errors
       } else if (error.request) {
-        // The request was made but no response was received
         setMessage('No response received from the server.');
+        setMessageColor('red');
       } else {
-        // Something happened in setting up the request that triggered an Error
         setMessage('Error in request setup.');
+        setMessageColor('red');
       }
       setWarning('');
     }
@@ -75,8 +79,8 @@ export default function Hero() {
               display: 'flex',
               flexDirection: { xs: 'column', sm: 'row' },
               alignItems: 'center',
-              fontSize: { xs: '2.5rem', sm: '4rem', md: '4.5rem' }, // Adjust font size for different screen sizes
-              color: '#00e676', // Striking green tone
+              fontSize: { xs: '2.5rem', sm: '4rem', md: '4.5rem' },
+              color: '#00e676',
             }}
           >
             Bienvenido&nbsp;a&nbsp;Energy&nbsp;Training&nbsp;Center&nbsp;
@@ -106,8 +110,8 @@ export default function Hero() {
                   boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
                   input: {
                     color: '#000000',
-                    padding: '24px 28px', // Increase padding for a bigger input field
-                    fontSize: '1.5rem', // Increase font size
+                    padding: '24px 28px',
+                    fontSize: '1.5rem',
                   },
                   '& .MuiOutlinedInput-root': {
                     '& fieldset': {
@@ -126,10 +130,10 @@ export default function Hero() {
                 type="submit"
                 variant="contained"
                 color="success"
-                startIcon={<img src={registerIcon} alt="logo" style={{ width: 35, height: 35 }} />} // Increase icon size
+                startIcon={<img src={registerIcon} alt="logo" style={{ width: 35, height: 35 }} />}
                 sx={{
-                  fontSize: '1.5rem', // Increase button text size
-                  padding: '24px 28px', // Increase padding for a bigger button
+                  fontSize: '1.5rem',
+                  padding: '24px 28px',
                 }}
               >
                 Registrarse
@@ -137,7 +141,7 @@ export default function Hero() {
             </Stack>
           </form>
           {message && (
-            <Typography sx={{ color: 'lightgreen', mt: 2, fontSize: '1.5rem' }}>
+            <Typography sx={{ color: messageColor, mt: 2, fontSize: '1.5rem' }}>
               {message}
             </Typography>
           )}

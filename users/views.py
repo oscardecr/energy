@@ -12,6 +12,8 @@ from datetime import datetime, timedelta
 from django.utils.timezone import now
 from finance.models import Payment
 from .utils import send_receipt_via_whatsapp
+from django.utils.html import format_html
+
 
 @api_view(['POST'])
 def register_user(request):
@@ -62,6 +64,7 @@ class LoginView(APIView):
             })
         return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
+
 @api_view(['POST'])
 def register_visit(request):
     national_id = request.data.get('national_id')
@@ -75,7 +78,12 @@ def register_visit(request):
         days_until_expiration = (user.membership_expiration - today).days
 
         if user.membership_expiration < today:
-            return Response({'error': 'La membresía ha expirado. Por favor renueve su membresía.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                'error': f'La membresía ha expirado. Por favor renueve su membresía, {user.first_name}.',
+                'style': {
+                    'color': 'red'
+                }
+            }, status=status.HTTP_400_BAD_REQUEST)
         elif days_until_expiration <= 7:
             Visit.objects.create(user=user)
             return Response({
@@ -88,6 +96,8 @@ def register_visit(request):
 
     Visit.objects.create(user=user)
     return Response({'message': f'Visita registrada exitosamente. Bienvenido(a): {user.first_name}'}, status=status.HTTP_201_CREATED)
+
+
 
 @api_view(['GET'])
 def expired_memberships(request):
