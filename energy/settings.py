@@ -160,7 +160,7 @@ WHATSAPP_API_TOKEN = 'your_whatsapp_api_token'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / '/var/data/db.sqlite3',
     }
 }
 
